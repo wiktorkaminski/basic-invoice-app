@@ -2,12 +2,14 @@ package wiktorkaminski.basicinvoiceapp.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Table(name = "products")
-public class Product {
+@Table(name = "contractors")
+public class Contractor {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -19,11 +21,21 @@ public class Product {
 
     private String name;
 
-    private String description;
+    @Column(length = 16)
+    private String shortName;
 
-    @Column(scale = 2)
-    private double price;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
 
-    private String units;
+    private String NIP;
+
+    private String REGON;
+
+    private String phone;
+
+    private String email;
+
+    private String website;
 
 }
