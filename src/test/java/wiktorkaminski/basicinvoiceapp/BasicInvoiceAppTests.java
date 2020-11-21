@@ -1,4 +1,4 @@
-package pl.wiktorkaminski.basicinvoiceapp;
+package wiktorkaminski.basicinvoiceapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
