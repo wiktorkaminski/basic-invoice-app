@@ -3,12 +3,11 @@ package wiktorkaminski.basicinvoiceapp.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "products")
-public class Product {
+public class User {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -18,16 +17,17 @@ public class Product {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    private String name;
+    private boolean superUserFlag;
 
-    private String description;
+    private String firstName;
 
-    private BigDecimal price;
+    private String lastName;
 
-    private String units;
+    private String email;
+
+    private String password;
 
     @ManyToOne
-    @JoinColumn(name = "contractor_id")
-    private Contractor owner;
+    private Contractor company;
 
 }

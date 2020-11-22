@@ -3,6 +3,7 @@ package wiktorkaminski.basicinvoiceapp.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -24,6 +25,10 @@ public class Invoice {
     private String signature;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User owner;
+
+    @ManyToOne
     @JoinColumn(name = "seller_id")
     private Contractor seller;
 
@@ -39,13 +44,12 @@ public class Invoice {
 
     private LocalDate paymentDate;
 
-    @Column(precision = 1)
-    private int paid;
+    @Column(columnDefinition = "TINYINT(1)")
+    private int paymentStatus;
 
     private String paymentMethod;
 
-    @Column(scale = 2)
-    private Double amountPaid;
+    private BigDecimal amountPaid;
 
     @OneToMany
     private Map<Double, Product> invoiceItems;
