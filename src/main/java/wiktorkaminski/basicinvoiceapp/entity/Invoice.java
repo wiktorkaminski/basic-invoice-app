@@ -29,12 +29,10 @@ public class Invoice {
     private User owner;
 
     @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private Contractor seller;
+    private InvoiceSeller seller;
 
     @ManyToOne
-    @JoinColumn(name = "buyer_id")
-    private Contractor buyer;
+    private InvoiceBuyer buyer;
 
     private LocalDateTime createdOn;
 
@@ -51,8 +49,8 @@ public class Invoice {
 
     private BigDecimal amountPaid;
 
-    @OneToMany
-    private Map<Double, Product> invoiceItems;
+    @OneToOne
+    private InvoiceProductList invoiceProductList;
 
     private String notes;
 

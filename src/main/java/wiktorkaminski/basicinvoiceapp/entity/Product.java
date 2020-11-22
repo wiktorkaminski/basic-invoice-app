@@ -22,12 +22,9 @@ public class Product {
 
     private String description;
 
-    private BigDecimal price;
-
     private String units;
 
     @ManyToOne
-    @JoinColumn(name = "contractor_id")
     private Contractor owner;
 
 }
