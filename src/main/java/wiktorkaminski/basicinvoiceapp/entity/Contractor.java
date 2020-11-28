@@ -37,6 +37,8 @@ public class Contractor {
     @ManyToOne
     private User owner;
 
+
+
     public Long getId() {
         return id;
     }

@@ -1,59 +1,37 @@
-package wiktorkaminski.basicinvoiceapp.entity;
+package wiktorkaminski.basicinvoiceapp.DTO;
 
-import javax.persistence.*;
+import wiktorkaminski.basicinvoiceapp.entity.InvoiceBuyer;
+import wiktorkaminski.basicinvoiceapp.entity.InvoiceProductList;
+import wiktorkaminski.basicinvoiceapp.entity.InvoiceSeller;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "invoices")
-public class Invoice {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class InvoiceDto {
     private Long id;
 
     private String symbol;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User owner;
+    private Long ownerId;
 
-    @ManyToOne
-    private InvoiceSeller seller;
+    private ContractorDto seller;
 
-    @ManyToOne
-    private InvoiceBuyer buyer;
+    private ContractorDto buyer;
 
-    private LocalDateTime createdOn;
+    private String saleDate;
 
-    private LocalDateTime updatedOn;
+    private String paymentDate;
 
-    private LocalDate saleDate;
-
-    private LocalDate paymentDate;
-
-    @Column(columnDefinition = "TINYINT(1)")
     private int paymentStatus;
 
     private String paymentMethod;
 
     private BigDecimal amountPaid;
 
-    @OneToOne
     private InvoiceProductList invoiceProductList;
 
     private String notes;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdOn = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedOn = LocalDateTime.now();
-    }
 
     public Long getId() {
         return id;
@@ -67,63 +45,47 @@ public class Invoice {
         return symbol;
     }
 
-    public void setSymbol(String signature) {
-        this.symbol = signature;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
-    public User getOwner() {
-        return owner;
+    public Long getOwnerId() {
+        return ownerId;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public InvoiceSeller getSeller() {
+    public ContractorDto getSeller() {
         return seller;
     }
 
-    public void setSeller(InvoiceSeller seller) {
+    public void setSeller(ContractorDto seller) {
         this.seller = seller;
     }
 
-    public InvoiceBuyer getBuyer() {
+    public ContractorDto getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(InvoiceBuyer buyer) {
+    public void setBuyer(ContractorDto buyer) {
         this.buyer = buyer;
     }
 
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(LocalDateTime createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public LocalDateTime getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(LocalDateTime updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public LocalDate getSaleDate() {
+    public String getSaleDate() {
         return saleDate;
     }
 
-    public void setSaleDate(LocalDate saleDate) {
+    public void setSaleDate(String saleDate) {
         this.saleDate = saleDate;
     }
 
-    public LocalDate getPaymentDate() {
+    public String getPaymentDate() {
         return paymentDate;
     }
 
-    public void setPaymentDate(LocalDate paymentDate) {
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
     }
 

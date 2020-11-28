@@ -4,7 +4,7 @@ import wiktorkaminski.basicinvoiceapp.entity.Address;
 
 import javax.persistence.*;
 
-public class ContractorDTO {
+public class ContractorDto {
 
     private Long id;
 
@@ -147,4 +147,10 @@ public class ContractorDTO {
     public String getFullAddress() {
         return String.join(" ", street, property, zipCode, city, country);
     }
+
+    @Override
+    public String toString() {
+        return String.join(" ", name, property, zipCode, city, nip);
+    }
+
 }

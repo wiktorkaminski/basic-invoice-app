@@ -1,7 +1,6 @@
 package wiktorkaminski.basicinvoiceapp.DTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import wiktorkaminski.basicinvoiceapp.entity.Address;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
@@ -19,7 +18,7 @@ public class ContractorDtoConverter {
         this.addressRepository = addressRepository;
     }
 
-    public Contractor dtoToEntity(ContractorDTO contractorDTO) {
+    public Contractor dtoToEntity(ContractorDto contractorDTO) {
         Contractor contractor = new Contractor();
 
         contractor.setId(contractorDTO.getId());
@@ -45,8 +44,8 @@ public class ContractorDtoConverter {
         return contractor;
     }
 
-    public ContractorDTO entityToDto(Contractor contractor) {
-        ContractorDTO contractorDTO = new ContractorDTO();
+    public ContractorDto entityToDto(Contractor contractor) {
+        ContractorDto contractorDTO = new ContractorDto();
         Optional<Address> tempAddress = addressRepository.findById(contractor.getAddress().getId());
         Address address;
         if (tempAddress.isPresent()) {
