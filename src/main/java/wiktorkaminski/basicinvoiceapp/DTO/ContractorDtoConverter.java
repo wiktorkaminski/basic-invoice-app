@@ -56,7 +56,7 @@ public class ContractorDtoConverter {
         }
 
         contractorDTO.setId(contractor.getId());
-        contractorDTO.setName(contractorDTO.getName());
+        contractorDTO.setName(contractor.getName());
         contractorDTO.setShortName(contractor.getShortName());
 
         contractorDTO.setAddressId(address.getId());
@@ -67,7 +67,7 @@ public class ContractorDtoConverter {
         contractorDTO.setZipCode(address.getZipCode());
 
         contractorDTO.setNip(contractor.getNip());
-        contractorDTO.setRegon(contractorDTO.getRegon());
+        contractorDTO.setRegon(contractor.getRegon());
         contractorDTO.setPhone(contractor.getPhone());
         contractorDTO.setEmail(contractor.getEmail());
         contractorDTO.setWebsite(contractor.getWebsite());

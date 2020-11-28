@@ -4,17 +4,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import wiktorkaminski.basicinvoiceapp.DTO.ContractorDTO;
 import wiktorkaminski.basicinvoiceapp.DTO.ContractorDtoConverter;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/contractor")
@@ -49,6 +48,23 @@ public class ContractorController {
         return "/contractor/list";
     }
 
+    @PostMapping("/update")
+    public String updateContractor(Model model, @RequestParam("id") Long id) {
+        model.addAttribute("contractorDto", this.prepareContracorDto(id));
+        return "contractor/form";
+    }
+
+    @PostMapping("/show-details")
+    public String showDetailedContractor(Model model, @RequestParam("id") Long id) {
+        model.addAttribute("contractorDto", this.prepareContracorDto(id));
+        return "contractor/details";
+    }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") Long id) {
+        return "contractor/delete-confirmation";
+    }
+
     private List<ContractorDTO> prepareContractorDtoList() {
         List<ContractorDTO> contractorDtoList = new ArrayList<>();
         List<Contractor> contractorEntityList = contractorRepository.findAll();
@@ -57,5 +73,11 @@ public class ContractorController {
             contractorDtoList.add(contractorDtoConverter.entityToDto(contractorEntity));
         }
         return contractorDtoList;
+    }
+
+    private ContractorDTO prepareContracorDto(Long id) {
+        Optional<Contractor> contractorEntity = contractorRepository.findById(id);
+        ContractorDTO contractorDto = contractorDtoConverter.entityToDto(contractorEntity.orElseThrow(EntityNotFoundException::new));
+        return contractorDto;
     }
 }

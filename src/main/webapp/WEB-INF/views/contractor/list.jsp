@@ -26,9 +26,6 @@
             Details
         </th>
         <th>
-            Modify
-        </th>
-        <th>
             Quick invoice
         </th>
     </tr>
@@ -48,6 +45,12 @@
             </td>
             <td>
                 <c:out value="${contractorDto.regon}"/>
+            </td>
+            <td>
+                <form method="POST" action="/contractor/show-details">
+                    <input name="id" value="${contractorDto.id}" hidden>
+                    <button type="submit">View</button>
+                </form>
             </td>
         </tr>
     </c:forEach>

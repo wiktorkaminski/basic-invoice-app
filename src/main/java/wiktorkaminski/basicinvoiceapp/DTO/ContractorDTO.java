@@ -143,4 +143,8 @@ public class ContractorDTO {
     public void setWebsite(String website) {
         this.website = website;
     }
+
+    public String getFullAddress() {
+        return String.join(" ", street, property, zipCode, city, country);
+    }
 }

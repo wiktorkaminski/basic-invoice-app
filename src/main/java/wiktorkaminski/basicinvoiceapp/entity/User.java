@@ -1,9 +1,9 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
-import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class User {
@@ -21,8 +21,5 @@ public class User {
     private String email;
 
     private String password;
-
-    @ManyToOne
-    private Contractor company;
 
 }
