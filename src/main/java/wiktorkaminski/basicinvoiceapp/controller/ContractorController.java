@@ -50,19 +50,28 @@ public class ContractorController {
 
     @PostMapping("/update")
     public String updateContractor(Model model, @RequestParam("id") Long id) {
-        model.addAttribute("contractorDto", this.prepareContracorDto(id));
+        model.addAttribute("contractorDto", this.prepareContractorDto(id));
         return "contractor/form";
     }
 
     @PostMapping("/show-details")
     public String showDetailedContractor(Model model, @RequestParam("id") Long id) {
-        model.addAttribute("contractorDto", this.prepareContracorDto(id));
+        model.addAttribute("contractorDto", this.prepareContractorDto(id));
         return "contractor/details";
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") Long id) {
+    public String delete(Model model, @RequestParam("id") Long id) {
+        String contractorName = contractorRepository.getContractorNameById(id);
+        model.addAttribute("contractorName", contractorName);
+        model.addAttribute("id", id);
         return "contractor/delete-confirmation";
+    }
+
+    @PostMapping("/delete-confirmed")
+    public String proceedDelete(@RequestParam("id") Long id) {
+        contractorRepository.deleteById(id);
+        return "redirect:/contractor/list";
     }
 
     private List<ContractorDTO> prepareContractorDtoList() {
@@ -75,7 +84,7 @@ public class ContractorController {
         return contractorDtoList;
     }
 
-    private ContractorDTO prepareContracorDto(Long id) {
+    private ContractorDTO prepareContractorDto(Long id) {
         Optional<Contractor> contractorEntity = contractorRepository.findById(id);
         ContractorDTO contractorDto = contractorDtoConverter.entityToDto(contractorEntity.orElseThrow(EntityNotFoundException::new));
         return contractorDto;
