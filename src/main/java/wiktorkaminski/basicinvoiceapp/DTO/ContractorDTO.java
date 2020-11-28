@@ -1,28 +1,28 @@
-package wiktorkaminski.basicinvoiceapp.entity;
+package wiktorkaminski.basicinvoiceapp.DTO;
 
-import org.hibernate.annotations.GenericGenerator;
-
+import wiktorkaminski.basicinvoiceapp.entity.Address;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
 
-@Entity
-@Table(name = "contractors")
-public class Contractor {
+public class ContractorDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long addressId;
 
     private String name;
 
-    @Column(length = 16)
     private String shortName;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE} )
-    @JoinColumn(name = "address_id")
-    private Address address;
+    private String country;
+
+    private String city;
+
+    private String street;
+
+    private String property;
+
+    private String zipCode;
 
     private String nip;
 
@@ -34,9 +34,6 @@ public class Contractor {
 
     private String website;
 
-    @ManyToOne
-    private User owner;
-
     public Long getId() {
         return id;
     }
@@ -45,6 +42,12 @@ public class Contractor {
         this.id = id;
     }
 
+    public Long getAddressId() {
+        return addressId;
+    }
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
     public String getName() {
         return name;
     }
@@ -61,12 +64,44 @@ public class Contractor {
         this.shortName = shortName;
     }
 
-    public Address getAddress() {
-        return address;
+    public String getCountry() {
+        return country;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getNip() {
@@ -107,13 +142,5 @@ public class Contractor {
 
     public void setWebsite(String website) {
         this.website = website;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
     }
 }
