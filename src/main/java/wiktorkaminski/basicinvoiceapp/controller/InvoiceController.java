@@ -7,17 +7,18 @@ import org.springframework.web.bind.annotation.*;
 import wiktorkaminski.basicinvoiceapp.DTO.ContractorDto;
 import wiktorkaminski.basicinvoiceapp.DTO.ContractorDtoConverter;
 import wiktorkaminski.basicinvoiceapp.DTO.InvoiceDto;
+import wiktorkaminski.basicinvoiceapp.DTO.InvoiceDtoConverter;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
+import wiktorkaminski.basicinvoiceapp.entity.Invoice;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceProduct;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceProductList;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceProductListRepository;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceProductRepository;
+import wiktorkaminski.basicinvoiceapp.repository.InvoiceRepository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/invoice")
@@ -25,6 +26,8 @@ public class InvoiceController {
 
     private final ContractorRepository contractorRepository;
     private final ContractorDtoConverter contractorDtoConverter;
+    private final InvoiceRepository invoiceRepository;
+    private final InvoiceDtoConverter invoiceDtoConverter;
     private final InvoiceProductListRepository invoiceProductListRepo;
     private final InvoiceProductRepository invoiceProductRepo;
     private final List<String> units = new ArrayList<>(Arrays.asList("psc", "service", "set"));
@@ -35,12 +38,15 @@ public class InvoiceController {
             Byte.parseByte("23")
     ));
 
+
     @Autowired
-    public InvoiceController(ContractorRepository contractorRepository, ContractorDtoConverter contractorDtoConverter, InvoiceProductListRepository invoiceProductListRepo, InvoiceProductRepository invoiceProductRepo) {
+    public InvoiceController(InvoiceRepository invoiceRepository, ContractorRepository contractorRepository, ContractorDtoConverter contractorDtoConverter, InvoiceDtoConverter invoiceDtoConverter, InvoiceProductListRepository invoiceProductListRepo, InvoiceProductRepository invoiceProductRepo) {
         this.contractorRepository = contractorRepository;
         this.contractorDtoConverter = contractorDtoConverter;
+        this.invoiceDtoConverter = invoiceDtoConverter;
         this.invoiceProductListRepo = invoiceProductListRepo;
         this.invoiceProductRepo = invoiceProductRepo;
+        this.invoiceRepository = invoiceRepository;
     }
 
     @GetMapping("/new-invoice-step-1-1")
@@ -79,8 +85,24 @@ public class InvoiceController {
         model.addAttribute("invoiceDto", invoiceDto);
         model.addAttribute("contractorsDtoList", this.prepareContractorDtoList());
         model.addAttribute("listId", listId);
-
         return "invoice/new-invoice-step-2";
+    }
+
+    @PostMapping("/new-invoice-step-3")
+    public String newInvoiceStep3(@RequestParam Long listId, InvoiceDto invoiceDto) {
+        Invoice invoice = invoiceDtoConverter.dtoToEntity(invoiceDto);
+        InvoiceProductList invoiceProductList = invoiceProductListRepo.findById(listId).get();
+        invoice.setInvoiceProductList(invoiceProductList);
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+        //set owner
+        return "redirect:invoice/list";
+    }
+
+    @GetMapping("/list")
+    public String invoceList(Model model) {
+        List<Invoice> invoices = invoiceRepository.findAll();
+        model.addAttribute("invoices", invoices);
+        return "/invoice/list";
     }
 
     private List<ContractorDto> prepareContractorDtoList() {

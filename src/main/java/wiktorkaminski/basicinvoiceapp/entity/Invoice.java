@@ -20,10 +20,10 @@ public class Invoice {
     private User owner;
 
     @ManyToOne
-    private InvoiceSeller seller;
+    private InvoiceContractor seller;
 
     @ManyToOne
-    private InvoiceBuyer buyer;
+    private InvoiceContractor buyer;
 
     private LocalDateTime createdOn;
 
@@ -79,19 +79,19 @@ public class Invoice {
         this.owner = owner;
     }
 
-    public InvoiceSeller getSeller() {
+    public InvoiceContractor getSeller() {
         return seller;
     }
 
-    public void setSeller(InvoiceSeller seller) {
+    public void setSeller(InvoiceContractor seller) {
         this.seller = seller;
     }
 
-    public InvoiceBuyer getBuyer() {
+    public InvoiceContractor getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(InvoiceBuyer buyer) {
+    public void setBuyer(InvoiceContractor buyer) {
         this.buyer = buyer;
     }
 

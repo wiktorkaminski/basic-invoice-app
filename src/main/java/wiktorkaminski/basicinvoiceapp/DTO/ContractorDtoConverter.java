@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import wiktorkaminski.basicinvoiceapp.entity.Address;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
+import wiktorkaminski.basicinvoiceapp.entity.InvoiceContractor;
 import wiktorkaminski.basicinvoiceapp.repository.AddressRepository;
 
 import java.util.Optional;
@@ -72,6 +73,26 @@ public class ContractorDtoConverter {
         contractorDTO.setWebsite(contractor.getWebsite());
 
         return contractorDTO;
+    }
+
+    public InvoiceContractor dtoToInvoiceContractor(ContractorDto contractorDto) {
+        InvoiceContractor invoiceContractor = new InvoiceContractor();
+        invoiceContractor.setId(contractorDto.getId());
+        invoiceContractor.setName(contractorDto.getName());
+
+        StringBuilder addressSb = new StringBuilder();
+        addressSb.append(contractorDto.getStreet()).append(" ")
+                .append(contractorDto.getProperty()).append(" \n")
+                .append(contractorDto.getZipCode()).append(" ")
+                .append(contractorDto.getCity());
+
+        invoiceContractor.setAddress(addressSb.toString());
+        invoiceContractor.setNIP(contractorDto.getNip());
+        invoiceContractor.setREGON(contractorDto.getRegon());
+        invoiceContractor.setEmail(contractorDto.getEmail());
+        invoiceContractor.setPhone(contractorDto.getPhone());
+
+        return invoiceContractor;
     }
 
 }

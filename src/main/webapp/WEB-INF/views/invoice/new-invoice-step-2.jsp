@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<form:form modelAttribute="invoiceDto">
+<form:form modelAttribute="invoiceDto" method="POST" action="/invoice/new-invoice-step-3">
     Input date of transaction:<br/>
     <form:input path="saleDate"/><br/>
 
@@ -22,12 +22,12 @@
     <c:out value="${invoiceDto.seller.email}"/> <br/>
 
     Buyer:<br/>
-    <form:select path="buyer">
+    <form:select path="buyer.id" itemLabel="label">
         <form:option value="-" label="-- please select --"/>
         <form:options items="${contractorsDtoList}"/>
         <input name="listId" value="${listId}" hidden>
     </form:select>
-    <button type="submit">Next step</button>
+    <button type="submit">Finalize</button>
 </form:form>
 
 </body>

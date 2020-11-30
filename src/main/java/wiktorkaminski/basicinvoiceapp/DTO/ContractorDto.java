@@ -148,8 +148,7 @@ public class ContractorDto {
         return String.join(" ", street, property, zipCode, city, country);
     }
 
-    @Override
-    public String toString() {
+    public String getLabel() {
         return String.join(" ", name, property, zipCode, city, nip);
     }
 

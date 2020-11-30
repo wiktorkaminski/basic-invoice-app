@@ -1,12 +1,8 @@
 package wiktorkaminski.basicinvoiceapp.DTO;
 
-import wiktorkaminski.basicinvoiceapp.entity.InvoiceBuyer;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceProductList;
-import wiktorkaminski.basicinvoiceapp.entity.InvoiceSeller;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class InvoiceDto {
     private Long id;
