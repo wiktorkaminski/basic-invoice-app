@@ -101,19 +101,19 @@ public class InvoiceController {
         double grossValue = InvoiceUtils.countTotalGrossValue(savedInvoice);
         double netValue = InvoiceUtils.countTotalNetValue(savedInvoice);
         double amountToPay = grossValue - savedInvoice.getAmountPaid();
+        //set owner
 
         model.addAttribute("grossValue", grossValue);
         model.addAttribute("netValue", netValue);
         model.addAttribute("amountToPay", amountToPay);
-        model.addAttribute("invoice")
-        //set owner
+        model.addAttribute("invoice", invoiceDtoConverter.entityToDto(savedInvoice));
+
         return "redirect:invoice/new-invoice-summary";
     }
 
     @GetMapping("/list")
     public String invoceList(Model model) {
-        List<Invoice> invoices = invoiceRepository.findAll();
-        model.addAttribute("invoices", invoices);
+        model.addAttribute("invoices", this.prepareInvoiceDtoList());
         return "/invoice/list";
     }
 
@@ -125,5 +125,16 @@ public class InvoiceController {
             contractorDtoList.add(contractorDtoConverter.entityToDto(contractorEntity));
         }
         return contractorDtoList;
+    }
+
+    private List<InvoiceDto> prepareInvoiceDtoList() {
+        List<InvoiceDto> invoiceDtos = new ArrayList<>();
+        List<Invoice> invoices = invoiceRepository.findAll();
+
+        for (Invoice invoice : invoices) {
+            invoiceDtos.add(invoiceDtoConverter.entityToDto(invoice));
+        }
+
+        return invoiceDtos;
     }
 }

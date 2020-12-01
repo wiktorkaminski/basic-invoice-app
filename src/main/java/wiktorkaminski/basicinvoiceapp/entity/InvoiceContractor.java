@@ -14,11 +14,21 @@ public class InvoiceContractor {
 
     private String name;
 
-    private String address;
+    private String shortName;
 
-    private String NIP;
+    private String country;
 
-    private String REGON;
+    private String city;
+
+    private String street;
+
+    private String property;
+
+    private String zipCode;
+
+    private String nip;
+
+    private String regon;
 
     private String phone;
 
@@ -40,28 +50,68 @@ public class InvoiceContractor {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
-    public String getNIP() {
-        return NIP;
+    public String getCountry() {
+        return country;
     }
 
-    public void setNIP(String NIP) {
-        this.NIP = NIP;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public String getREGON() {
-        return REGON;
+    public String getCity() {
+        return city;
     }
 
-    public void setREGON(String REGON) {
-        this.REGON = REGON;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getNip() {
+        return nip;
+    }
+
+    public void setNip(String nip) {
+        this.nip = nip;
+    }
+
+    public String getRegon() {
+        return regon;
+    }
+
+    public void setRegon(String REGON) {
+        this.regon = REGON;
     }
 
     public String getPhone() {
