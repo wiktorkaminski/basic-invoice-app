@@ -4,59 +4,58 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import wiktorkaminski.basicinvoiceapp.DTO.ContractorDto;
-import wiktorkaminski.basicinvoiceapp.DTO.ContractorDtoConverter;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/contractor")
 public class ContractorController {
 
     private final ContractorRepository contractorRepository;
-    private final ContractorDtoConverter contractorDtoConverter;
 
     private final Logger logger = LoggerFactory.getLogger(ContractorController.class);
 
-    public ContractorController(ContractorRepository contractorRepository, ContractorDtoConverter contractorDtoConverter) {
+    public ContractorController(ContractorRepository contractorRepository) {
         this.contractorRepository = contractorRepository;
-        this.contractorDtoConverter = contractorDtoConverter;
     }
 
     @GetMapping("/form")
     public String form(Model model) {
-        model.addAttribute("contractorDto", new ContractorDto());
+        model.addAttribute("contractor", new Contractor());
         return "contractor/form";
     }
 
     @PostMapping("/form")
-    public String processForm(ContractorDto contractorDTO) {
-        Contractor contractor = contractorDtoConverter.dtoToEntity(contractorDTO);
+    public String processForm(Contractor contractor) {
         contractorRepository.save(contractor);
         return "redirect:/";
     }
 
     @GetMapping("/list")
     public String showAllContractors(Model model) {
-        model.addAttribute("contractors", this.prepareContractorDtoList());
+        List<Contractor> contractors = contractorRepository.findAll();
+        model.addAttribute("contractors", contractors);
         return "/contractor/list";
     }
 
     @PostMapping("/update")
     public String updateContractor(Model model, @RequestParam("id") Long id) {
-        model.addAttribute("contractorDto", this.prepareContractorDto(id));
+        Contractor contractor = contractorRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        model.addAttribute("contractor", contractor);
         return "contractor/form";
     }
 
     @PostMapping("/show-details")
     public String showDetailedContractor(Model model, @RequestParam("id") Long id) {
-        model.addAttribute("contractorDto", this.prepareContractorDto(id));
+        Contractor contractor = contractorRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        model.addAttribute("contractor", contractor);
         return "contractor/details";
     }
 
@@ -72,21 +71,5 @@ public class ContractorController {
     public String proceedDelete(@RequestParam("id") Long id) {
         contractorRepository.deleteById(id);
         return "redirect:/contractor/list";
-    }
-
-    private List<ContractorDto> prepareContractorDtoList() {
-        List<ContractorDto> contractorDtoList = new ArrayList<>();
-        List<Contractor> contractorEntityList = contractorRepository.findAll();
-
-        for (Contractor contractorEntity : contractorEntityList) {
-            contractorDtoList.add(contractorDtoConverter.entityToDto(contractorEntity));
-        }
-        return contractorDtoList;
-    }
-
-    private ContractorDto prepareContractorDto(Long id) {
-        Optional<Contractor> contractorEntity = contractorRepository.findById(id);
-        ContractorDto contractorDto = contractorDtoConverter.entityToDto(contractorEntity.orElseThrow(EntityNotFoundException::new));
-        return contractorDto;
     }
 }

@@ -37,8 +37,6 @@ public class Contractor {
     @ManyToOne
     private User owner;
 
-
-
     public Long getId() {
         return id;
     }
@@ -118,4 +116,9 @@ public class Contractor {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+
+    public String getLabel() {
+        return String.join(" ", shortName, name, address.getCity(), nip);
+    }
+
 }

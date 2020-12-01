@@ -6,7 +6,7 @@
     <title>Contractor form</title>
 </head>
 <body>
-<form:form modelAttribute="contractorDto" method="POST" action="/contractor/form">
+<form:form modelAttribute="contractor" method="POST" action="/contractor/form">
     <form:hidden path="id"/>
     Contractor
     <br/>
@@ -17,17 +17,16 @@
     <form:input path="shortName"/>
     <br/>
     Address
-    <form:hidden path="addressId"/>
-    <form:label path="street">Street: </form:label>
-    <form:input path="street"/>
-    <form:label path="property" >Property: </form:label>
-    <form:input path="property"/>
-    <form:label path="zipCode" >ZIP Code: </form:label>
-    <form:input path="zipCode"/>
-    <form:label path="city" >City: </form:label>
-    <form:input path="city"/>
-    <form:label path="country" >Country: </form:label>
-    <form:input path="country"/>
+    <form:label path="address.street">Street: </form:label>
+    <form:input path="address.street"/>
+    <form:label path="address.property" >Property: </form:label>
+    <form:input path="address.property"/>
+    <form:label path="address.zipCode" >ZIP Code: </form:label>
+    <form:input path="address.zipCode"/>
+    <form:label path="address.city" >City: </form:label>
+    <form:input path="address.city"/>
+    <form:label path="address.country" >Country: </form:label>
+    <form:input path="address.country"/>
     <br/>
     Registry data
     <br/>

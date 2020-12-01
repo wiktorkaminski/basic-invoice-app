@@ -20,18 +20,6 @@ public class Address {
 
     private String property;
 
-    public Address() {
-    }
-
-    public Address(Long id, String country, String city, String street, String zipCode, String property) {
-        this.id = id;
-        this.country = country;
-        this.city = city;
-        this.street = street;
-        this.zipCode = zipCode;
-        this.property = property;
-    }
-
     public Long getId() {
         return id;
     }
@@ -80,5 +68,8 @@ public class Address {
         this.property = flat;
     }
 
+    public String getFullAddress() {
+        return String.join(" ", street, property, zipCode, city);
+    }
 
 }

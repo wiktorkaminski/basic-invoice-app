@@ -29,26 +29,26 @@
             Quick invoice
         </th>
     </tr>
-    <c:forEach items="${contractors}" var="contractorDto">
+    <c:forEach items="${contractors}" var="contractor">
         <tr>
             <td>
-                <c:out value="${contractorDto.name}"/>
+                <c:out value="${contractor.name}"/>
             </td>
             <td>
-                <c:out value="${contractorDto.shortName}"/>
+                <c:out value="${contractor.shortName}"/>
             </td>
             <td>
-                <c:out value="${contractorDto.city}"/>
+                <c:out value="${contractor.address.city}"/>
             </td>
             <td>
-                <c:out value="${contractorDto.nip}"/>
+                <c:out value="${contractor.nip}"/>
             </td>
             <td>
-                <c:out value="${contractorDto.regon}"/>
+                <c:out value="${contractor.regon}"/>
             </td>
             <td>
                 <form method="POST" action="/contractor/show-details">
-                    <input name="id" value="${contractorDto.id}" hidden>
+                    <input name="id" value="${contractor.id}" hidden>
                     <button type="submit">View</button>
                 </form>
             </td>

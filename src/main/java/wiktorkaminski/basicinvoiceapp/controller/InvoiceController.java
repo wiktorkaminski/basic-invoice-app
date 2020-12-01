@@ -1,36 +1,33 @@
 package wiktorkaminski.basicinvoiceapp.controller;
 
-import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import wiktorkaminski.basicinvoiceapp.DTO.ContractorDto;
-import wiktorkaminski.basicinvoiceapp.DTO.ContractorDtoConverter;
 import wiktorkaminski.basicinvoiceapp.DTO.InvoiceDto;
-import wiktorkaminski.basicinvoiceapp.DTO.InvoiceDtoConverter;
-import wiktorkaminski.basicinvoiceapp.entity.Contractor;
-import wiktorkaminski.basicinvoiceapp.entity.Invoice;
-import wiktorkaminski.basicinvoiceapp.entity.InvoiceProduct;
-import wiktorkaminski.basicinvoiceapp.entity.InvoiceProductList;
+import wiktorkaminski.basicinvoiceapp.entity.*;
 import wiktorkaminski.basicinvoiceapp.misc.InvoiceUtils;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceProductListRepository;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceProductRepository;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceRepository;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/invoice")
 public class InvoiceController {
 
     private final ContractorRepository contractorRepository;
-    private final ContractorDtoConverter contractorDtoConverter;
     private final InvoiceRepository invoiceRepository;
-    private final InvoiceDtoConverter invoiceDtoConverter;
     private final InvoiceProductListRepository invoiceProductListRepo;
     private final InvoiceProductRepository invoiceProductRepo;
     private final List<String> units = new ArrayList<>(Arrays.asList("psc", "service", "set"));
@@ -43,10 +40,8 @@ public class InvoiceController {
 
 
     @Autowired
-    public InvoiceController(InvoiceRepository invoiceRepository, ContractorRepository contractorRepository, ContractorDtoConverter contractorDtoConverter, InvoiceDtoConverter invoiceDtoConverter, InvoiceProductListRepository invoiceProductListRepo, InvoiceProductRepository invoiceProductRepo) {
+    public InvoiceController(InvoiceRepository invoiceRepository, ContractorRepository contractorRepository, InvoiceProductListRepository invoiceProductListRepo, InvoiceProductRepository invoiceProductRepo) {
         this.contractorRepository = contractorRepository;
-        this.contractorDtoConverter = contractorDtoConverter;
-        this.invoiceDtoConverter = invoiceDtoConverter;
         this.invoiceProductListRepo = invoiceProductListRepo;
         this.invoiceProductRepo = invoiceProductRepo;
         this.invoiceRepository = invoiceRepository;
@@ -82,59 +77,35 @@ public class InvoiceController {
 
     @PostMapping("/new-invoice-step-2")
     public String newInvoiceStep2(Model model, @RequestParam Long listId) {
-        InvoiceDto invoiceDto = new InvoiceDto();
-        invoiceDto.setSaleDate(LocalDate.now().toString());
-        invoiceDto.setSeller(new ContractorDto());
-        model.addAttribute("invoiceDto", invoiceDto);
-        model.addAttribute("contractorsDtoList", this.prepareContractorDtoList());
-        model.addAttribute("listId", listId);
+        Invoice newInvoice = new Invoice();
+        newInvoice.setSaleDate(LocalDate.now());
+        newInvoice.setSeller(new InvoiceContractor());
+        model.addAttribute("invoice", newInvoice);
+        model.addAttribute("contractors", contractorRepository.findAll());
         return "invoice/new-invoice-step-2";
     }
 
     @PostMapping("/new-invoice-step-3")
-    public String newInvoiceStep3(Model model, @RequestParam Long listId, InvoiceDto invoiceDto) {
-        Invoice invoice = invoiceDtoConverter.dtoToEntity(invoiceDto);
-        InvoiceProductList invoiceProductList = invoiceProductListRepo.findById(listId).get();
-        invoice.setInvoiceProductList(invoiceProductList);
+    public String newInvoiceStep3(Model model, Invoice invoice, Long buyerId) {
+        Contractor contractor = contractorRepository.findById(buyerId).orElseThrow(NoSuchElementException::new);
         Invoice savedInvoice = invoiceRepository.save(invoice);
 
         double grossValue = InvoiceUtils.countTotalGrossValue(savedInvoice);
         double netValue = InvoiceUtils.countTotalNetValue(savedInvoice);
         double amountToPay = grossValue - savedInvoice.getAmountPaid();
-        //set owner
+        // TODO change set owner
 
         model.addAttribute("grossValue", grossValue);
         model.addAttribute("netValue", netValue);
         model.addAttribute("amountToPay", amountToPay);
-        model.addAttribute("invoice", invoiceDtoConverter.entityToDto(savedInvoice));
+        model.addAttribute("invoice", savedInvoice);
 
-        return "redirect:invoice/new-invoice-summary";
+        return "redirect:invoice/list";
     }
 
     @GetMapping("/list")
-    public String invoceList(Model model) {
-        model.addAttribute("invoices", this.prepareInvoiceDtoList());
+    public String invoiceList(Model model) {
+        model.addAttribute("invoices", invoiceRepository.findAll());
         return "/invoice/list";
-    }
-
-    private List<ContractorDto> prepareContractorDtoList() {
-        List<ContractorDto> contractorDtoList = new ArrayList<>();
-        List<Contractor> contractorEntityList = contractorRepository.findAll();
-
-        for (Contractor contractorEntity : contractorEntityList) {
-            contractorDtoList.add(contractorDtoConverter.entityToDto(contractorEntity));
-        }
-        return contractorDtoList;
-    }
-
-    private List<InvoiceDto> prepareInvoiceDtoList() {
-        List<InvoiceDto> invoiceDtos = new ArrayList<>();
-        List<Invoice> invoices = invoiceRepository.findAll();
-
-        for (Invoice invoice : invoices) {
-            invoiceDtos.add(invoiceDtoConverter.entityToDto(invoice));
-        }
-
-        return invoiceDtos;
     }
 }

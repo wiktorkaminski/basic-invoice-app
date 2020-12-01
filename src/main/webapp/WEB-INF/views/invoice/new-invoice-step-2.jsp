@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<form:form modelAttribute="invoiceDto" method="POST" action="/invoice/new-invoice-step-3">
+<form:form modelAttribute="invoice" method="POST" action="/invoice/new-invoice-step-3">
 
     <form:label path="saleDate">Input date of transaction:</form:label>
     <br/>
@@ -19,19 +19,20 @@
 
     Seler:
     <br/>
-    <c:out value="${invoiceDto.seller.name}"/> <br/>
-    <c:out value="${invoiceDto.seller.street} ${invoiceDto.seller.property}"/> <br/>
-    <c:out value="${invoiceDto.seller.zipCode} ${invoiceDto.seller.city}"/> <br/>
-    <c:out value="${invoiceDto.seller.nip}"/> <br/>
-    <c:out value="${invoiceDto.seller.email}"/> <br/>
+    <c:out value="${invoice.seller.name}"/> <br/>
+    <c:out value="${invoice.seller.street} ${invoice.seller.property}"/> <br/>
+    <c:out value="${invoice.seller.zipCode} ${invoice.seller.city}"/> <br/>
+    <c:out value="${invoice.seller.nip}"/> <br/>
+    <c:out value="${invoice.seller.email}"/> <br/>
 
-    <form:label path="buyer">Buyer:</form:label>
+    <label for="buyer">Buyer:</label>
     <br/>
-    <form:select path="buyer.id" itemValue="id" itemLabel="label">
-        <form:option value="-" label="-- please select --"/>
-        <form:options items="${contractorsDtoList}"/>
-        <input name="listId" value="${listId}" hidden>
-    </form:select>
+    <select name="buyerId" id="buyer">
+        <option value="-">-- please select --</option>
+        <c:forEach items="${contractors}" var="contractor">
+            <option value="${contractor.id}">${contractor.label}</option>
+        </c:forEach>
+    </select>
     <br/>
 
     <form:label path="amountPaid">Amount paid: </form:label>
@@ -41,7 +42,6 @@
     <form:label path="notes">Notes: </form:label>
     <form:textarea path="notes" rows="4"/>
     <br/>
-
 
     <button type="submit">Finalize</button>
 
