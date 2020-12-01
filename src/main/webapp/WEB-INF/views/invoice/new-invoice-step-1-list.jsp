@@ -68,14 +68,6 @@
         </tr>
     </c:forEach>
 </table>
-<form method="GET" action="/invoice/new-invoice-step-1-1">
-    <input name="listId" value="${productList.id}" hidden/>
-    <button type="submit">Add new item</button>
-</form>
-
-<form method="POST" action="/invoice/new-invoice-step-2">
-    <input name="listId" value="${productList.id}" hidden/>
-    <button type="submit">Item list done</button>
 </form>
 
 

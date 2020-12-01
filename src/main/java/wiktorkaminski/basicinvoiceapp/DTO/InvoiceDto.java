@@ -2,8 +2,6 @@ package wiktorkaminski.basicinvoiceapp.DTO;
 
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceProductList;
 
-import java.math.BigDecimal;
-
 public class InvoiceDto {
     private Long id;
 
@@ -19,11 +17,7 @@ public class InvoiceDto {
 
     private String paymentDate;
 
-    private int paymentStatus;
-
-    private String paymentMethod;
-
-    private BigDecimal amountPaid;
+    private double amountPaid;
 
     private InvoiceProductList invoiceProductList;
 
@@ -85,27 +79,11 @@ public class InvoiceDto {
         this.paymentDate = paymentDate;
     }
 
-    public int getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(int paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public BigDecimal getAmountPaid() {
+    public double getAmountPaid() {
         return amountPaid;
     }
 
-    public void setAmountPaid(BigDecimal amountPaid) {
+    public void setAmountPaid(double amountPaid) {
         this.amountPaid = amountPaid;
     }
 

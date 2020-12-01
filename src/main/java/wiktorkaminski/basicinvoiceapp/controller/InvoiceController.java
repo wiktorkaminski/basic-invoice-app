@@ -1,5 +1,6 @@
 package wiktorkaminski.basicinvoiceapp.controller;
 
+import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,11 +13,13 @@ import wiktorkaminski.basicinvoiceapp.entity.Contractor;
 import wiktorkaminski.basicinvoiceapp.entity.Invoice;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceProduct;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceProductList;
+import wiktorkaminski.basicinvoiceapp.misc.InvoiceUtils;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceProductListRepository;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceProductRepository;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceRepository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -89,13 +92,22 @@ public class InvoiceController {
     }
 
     @PostMapping("/new-invoice-step-3")
-    public String newInvoiceStep3(@RequestParam Long listId, InvoiceDto invoiceDto) {
+    public String newInvoiceStep3(Model model, @RequestParam Long listId, InvoiceDto invoiceDto) {
         Invoice invoice = invoiceDtoConverter.dtoToEntity(invoiceDto);
         InvoiceProductList invoiceProductList = invoiceProductListRepo.findById(listId).get();
         invoice.setInvoiceProductList(invoiceProductList);
         Invoice savedInvoice = invoiceRepository.save(invoice);
+
+        double grossValue = InvoiceUtils.countTotalGrossValue(savedInvoice);
+        double netValue = InvoiceUtils.countTotalNetValue(savedInvoice);
+        double amountToPay = grossValue - savedInvoice.getAmountPaid();
+
+        model.addAttribute("grossValue", grossValue);
+        model.addAttribute("netValue", netValue);
+        model.addAttribute("amountToPay", amountToPay);
+        model.addAttribute("invoice")
         //set owner
-        return "redirect:invoice/list";
+        return "redirect:invoice/new-invoice-summary";
     }
 
     @GetMapping("/list")

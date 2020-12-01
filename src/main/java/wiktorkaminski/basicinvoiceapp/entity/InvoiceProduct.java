@@ -1,7 +1,6 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 public class InvoiceProduct {
@@ -16,7 +15,7 @@ public class InvoiceProduct {
 
     private double quantity;
 
-    private BigDecimal price;
+    private double price;
 
     private byte vatRate;
 
@@ -52,11 +51,11 @@ public class InvoiceProduct {
         this.quantity = quantity;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

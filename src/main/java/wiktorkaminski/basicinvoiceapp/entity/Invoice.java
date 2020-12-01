@@ -1,7 +1,6 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -33,12 +32,7 @@ public class Invoice {
 
     private LocalDate paymentDate;
 
-    @Column(columnDefinition = "TINYINT(1)")
-    private int paymentStatus;
-
-    private String paymentMethod;
-
-    private BigDecimal amountPaid;
+    private double amountPaid;
 
     @OneToOne
     private InvoiceProductList invoiceProductList;
@@ -127,27 +121,11 @@ public class Invoice {
         this.paymentDate = paymentDate;
     }
 
-    public int getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(int paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public BigDecimal getAmountPaid() {
+    public double getAmountPaid() {
         return amountPaid;
     }
 
-    public void setAmountPaid(BigDecimal amountPaid) {
+    public void setAmountPaid(double amountPaid) {
         this.amountPaid = amountPaid;
     }
 

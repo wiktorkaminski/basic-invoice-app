@@ -45,9 +45,11 @@ public class ContractorDto {
     public Long getAddressId() {
         return addressId;
     }
+
     public void setAddressId(Long addressId) {
         this.addressId = addressId;
     }
+
     public String getName() {
         return name;
     }

@@ -33,11 +33,13 @@ public class InvoiceDtoConverter {
 
         invoice.setSaleDate(LocalDate.parse(invoiceDto.getSaleDate()));
         invoice.setPaymentDate(LocalDate.parse(invoiceDto.getPaymentDate()));
-        invoice.setPaymentStatus(invoiceDto.getPaymentStatus());
-        invoice.setPaymentMethod(invoiceDto.getPaymentMethod());
         invoice.setAmountPaid(invoiceDto.getAmountPaid());
         invoice.setNotes(invoiceDto.getNotes());
 
         return invoice;
+    }
+
+    public InvoiceDto entityToDto(Invoice invoice) {
+
     }
 }
