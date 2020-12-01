@@ -5,3 +5,4 @@ import wiktorkaminski.basicinvoiceapp.entity.Address;
 
 public interface AddressRepository extends CrudRepository <Address, Long> {
 }
+
