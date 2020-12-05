@@ -1,63 +1,61 @@
-package wiktorkaminski.basicinvoiceapp.entity;
+package wiktorkaminski.basicinvoiceapp.security;
 
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import wiktorkaminski.basicinvoiceapp.entity.Address;
+import wiktorkaminski.basicinvoiceapp.entity.User;
+import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
 
-
-import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
-
-@Entity
-@Table(name = "contractors")
-public class Contractor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+@Component
+public class RegistrationForm {
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String password;
     private String name;
-
-    @Column(length = 16)
     private String shortName;
-
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE} )
-    @JoinColumn(name = "address_id")
     private Address address;
-
     private String nip;
-
     private String regon;
-
     private String phone;
-
     private String email;
-
     private String website;
 
-    @ManyToOne
-    private User owner;
-
-
-    public Contractor() {
+    public User toUser(PasswordEncoder passwordEncoder) {
+        return new User(firstName, lastName, username, passwordEncoder.encode(password));
     }
 
-    public Contractor(String name, String shortName, Address address, String nip, String regon, String phone, String email, String website) {
-        this.name = name;
-        this.shortName = shortName;
-        this.address = address;
-        this.nip = nip;
-        this.regon = regon;
-        this.phone = phone;
-        this.email = email;
-        this.website = website;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public Long getId() {
-        return id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -123,19 +121,4 @@ public class Contractor {
     public void setWebsite(String website) {
         this.website = website;
     }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public String getLabel() {
-        return String.join(" ", shortName, name, address.getCity(), nip);
-    }
-
-
-
 }

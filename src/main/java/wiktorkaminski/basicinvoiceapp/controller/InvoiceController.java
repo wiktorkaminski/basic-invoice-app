@@ -1,5 +1,7 @@
 package wiktorkaminski.basicinvoiceapp.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import wiktorkaminski.basicinvoiceapp.DTO.ContractorDto;
 import wiktorkaminski.basicinvoiceapp.DTO.InvoiceDto;
+import wiktorkaminski.basicinvoiceapp.converter.ContractorConverter;
 import wiktorkaminski.basicinvoiceapp.entity.*;
 import wiktorkaminski.basicinvoiceapp.misc.InvoiceUtils;
-import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
-import wiktorkaminski.basicinvoiceapp.repository.InvoiceProductListRepository;
-import wiktorkaminski.basicinvoiceapp.repository.InvoiceProductRepository;
-import wiktorkaminski.basicinvoiceapp.repository.InvoiceRepository;
+import wiktorkaminski.basicinvoiceapp.misc.SymbolGenerator;
+import wiktorkaminski.basicinvoiceapp.repository.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,10 +27,14 @@ import java.util.NoSuchElementException;
 @RequestMapping("/invoice")
 public class InvoiceController {
 
+    private final Logger logger = LoggerFactory.getLogger(InvoiceController.class);
     private final ContractorRepository contractorRepository;
     private final InvoiceRepository invoiceRepository;
     private final InvoiceProductListRepository invoiceProductListRepo;
     private final InvoiceProductRepository invoiceProductRepo;
+    private final InvoiceContractorRepository invoiceContractorRepo;
+    private final UserRepository userRepository;
+    private final SymbolGenerator symbolGenerator;
     private final List<String> units = new ArrayList<>(Arrays.asList("psc", "service", "set"));
     private final List<Byte> vatRate = new ArrayList<>(Arrays.asList(
             Byte.parseByte("0"),
@@ -40,11 +45,14 @@ public class InvoiceController {
 
 
     @Autowired
-    public InvoiceController(InvoiceRepository invoiceRepository, ContractorRepository contractorRepository, InvoiceProductListRepository invoiceProductListRepo, InvoiceProductRepository invoiceProductRepo) {
+    public InvoiceController(InvoiceRepository invoiceRepository, ContractorRepository contractorRepository, InvoiceProductListRepository invoiceProductListRepo, InvoiceProductRepository invoiceProductRepo, InvoiceContractorRepository invoiceContractorRepo, UserRepository userRepository, SymbolGenerator symbolGenerator) {
         this.contractorRepository = contractorRepository;
         this.invoiceProductListRepo = invoiceProductListRepo;
         this.invoiceProductRepo = invoiceProductRepo;
         this.invoiceRepository = invoiceRepository;
+        this.invoiceContractorRepo = invoiceContractorRepo;
+        this.userRepository = userRepository;
+        this.symbolGenerator = symbolGenerator;
     }
 
     @GetMapping("/new-invoice-step-1-1")
@@ -80,6 +88,7 @@ public class InvoiceController {
         Invoice newInvoice = new Invoice();
         newInvoice.setSaleDate(LocalDate.now());
         newInvoice.setSeller(new InvoiceContractor());
+        newInvoice.setInvoiceProductList(invoiceProductListRepo.findById(listId).orElseThrow(NoSuchElementException::new));
         model.addAttribute("invoice", newInvoice);
         model.addAttribute("contractors", contractorRepository.findAll());
         return "invoice/new-invoice-step-2";
@@ -87,20 +96,20 @@ public class InvoiceController {
 
     @PostMapping("/new-invoice-step-3")
     public String newInvoiceStep3(Model model, Invoice invoice, Long buyerId) {
-        Contractor contractor = contractorRepository.findById(buyerId).orElseThrow(NoSuchElementException::new);
+        Contractor buyer = contractorRepository.findById(buyerId).orElseThrow(NoSuchElementException::new);
+        InvoiceContractor invoiceBuyer = ContractorConverter.convertToInvoiceContractor(buyer);
+        invoiceBuyer = invoiceContractorRepo.save(invoiceBuyer);
+
+        invoice.setOwner(userRepository.findById(1L).orElseThrow(NoSuchElementException::new));
+        // TODO change set owner
+        invoice.setBuyer(invoiceBuyer);
+
+        String invoiceSymbol = symbolGenerator.generate(invoice);
+        invoice.setSymbol(invoiceSymbol);
+
         Invoice savedInvoice = invoiceRepository.save(invoice);
 
-        double grossValue = InvoiceUtils.countTotalGrossValue(savedInvoice);
-        double netValue = InvoiceUtils.countTotalNetValue(savedInvoice);
-        double amountToPay = grossValue - savedInvoice.getAmountPaid();
-        // TODO change set owner
-
-        model.addAttribute("grossValue", grossValue);
-        model.addAttribute("netValue", netValue);
-        model.addAttribute("amountToPay", amountToPay);
-        model.addAttribute("invoice", savedInvoice);
-
-        return "redirect:invoice/list";
+        return "redirect:/invoice/list";
     }
 
     @GetMapping("/list")

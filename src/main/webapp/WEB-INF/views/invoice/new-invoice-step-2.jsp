@@ -43,6 +43,7 @@
     <form:textarea path="notes" rows="4"/>
     <br/>
 
+    <form:hidden path="invoiceProductList"/>
     <button type="submit">Finalize</button>
 
 </form:form>

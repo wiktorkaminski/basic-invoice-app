@@ -15,13 +15,12 @@ public class InvoiceSymbolGenerator {
     }
 
     public String generateSymbol(Invoice invoice) {
-        Long ownerId = invoice.getOwner().getId();
         LocalDate saleDate = invoice.getSaleDate();
         String year = String.valueOf(saleDate.getYear());
         String month = String.valueOf(saleDate.getMonth());
 
 
-        InvoiceSymbol symbol = invoiceSymbolRepository.findFirstByOwner(ownerId);
+        InvoiceSymbol symbol = invoiceSymbolRepository.findFirstByOwner(invoice.getOwner());
         Long invoiceNumber = symbol.getInvoiceNumber();
 
         if (invoiceNumber == null) {

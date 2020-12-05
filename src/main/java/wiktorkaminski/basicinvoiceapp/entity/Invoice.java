@@ -1,5 +1,7 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
+import wiktorkaminski.basicinvoiceapp.misc.InvoiceUtils;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,10 +20,10 @@ public class Invoice {
     @JoinColumn(name = "user_id")
     private User owner;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private InvoiceContractor seller;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private InvoiceContractor buyer;
 
     private LocalDateTime createdOn;
@@ -144,4 +146,25 @@ public class Invoice {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
+    public double getGrossValue() {
+        if (invoiceProductList == null || invoiceProductList.getProductList().isEmpty()) {
+            return 0.0;
+
+        }
+        return InvoiceUtils.countTotalGrossValue(this);
+    }
+
+    public double getNetValue() {
+        if (invoiceProductList == null || invoiceProductList.getProductList().isEmpty()) {
+            return 0.0;
+
+        }
+        return InvoiceUtils.countTotalNetValue(this);
+    }
+
+    public double getAmountToPay() {
+        return (getGrossValue() - amountPaid);
+    }
+
 }

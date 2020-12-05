@@ -36,4 +36,5 @@ public class InvoiceUtils {
         double grossValue = countTotalGrossValue(invoice);
         return grossValue - invoice.getAmountPaid();
     }
+
 }

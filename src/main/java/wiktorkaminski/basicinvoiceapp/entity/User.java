@@ -1,80 +1,78 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Arrays;
+import java.util.Collection;
 
 @Entity
-public class User {
+@Table(name = "users")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean superUserFlag;
-
     private String firstName;
 
     private String lastName;
 
-    private String email;
+    private String username;
 
     private String password;
+
+    private String authority;
+
+    private boolean enabled;
 
     @OneToOne
     private Contractor company;
 
-    public Long getId() {
-        return id;
+    public User() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public boolean isSuperUserFlag() {
-        return superUserFlag;
-    }
-
-    public void setSuperUserFlag(boolean superUserFlag) {
-        this.superUserFlag = superUserFlag;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
+    public User(String firstName, String lastName, String username, String password) {
         this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
         this.lastName = lastName;
+        this.username = username;
+        this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Arrays.asList(new SimpleGrantedAuthority(authority));
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public Contractor getCompany() {
-        return company;
+    @Override
+    public boolean isAccountNonExpired() {
+        return enabled;
     }
 
-    public void setCompany(Contractor company) {
-        this.company = company;
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }
