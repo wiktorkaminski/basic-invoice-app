@@ -34,11 +34,13 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstName, String lastName, String username, String password) {
+    public User(String firstName, String lastName, String username, String password, String authority, boolean enabled) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.authority = authority;
+        this.enabled = true;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return enabled;
+        return true;
     }
 
     @Override
@@ -73,6 +75,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 }

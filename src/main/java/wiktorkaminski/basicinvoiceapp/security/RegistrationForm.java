@@ -22,8 +22,9 @@ public class RegistrationForm {
     private String email;
     private String website;
 
-    public User toUser(PasswordEncoder passwordEncoder) {
-        return new User(firstName, lastName, username, passwordEncoder.encode(password));
+
+    public User toUser(@Autowired PasswordEncoder passwordEncoder) {
+        return new User(firstName, lastName, username, passwordEncoder.encode(password), "ROLE_USER", true);
     }
 
     public String getFirstName() {

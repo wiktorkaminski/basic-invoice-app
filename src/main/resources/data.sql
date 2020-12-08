@@ -23,7 +23,7 @@ INSERT INTO invoice_product_list_product_list (invoice_product_list_id, product_
 INSERT INTO invoice_product_list_product_list (invoice_product_list_id, product_list_id) VALUES (1, 2);
 
 INSERT INTO invoices (id, amount_paid, created_on, notes, payment_date, sale_date, symbol, updated_on, buyer_id, invoice_product_list_id, user_id, seller_id) VALUES (1, 0, '2020-12-01 14:27:08', 'Computer service on Rozdzienskiego Street 222', '2021-01-31', '2020-12-01', '0/2020', null, 1, 1, null, 2);
-INSERT INTO users (id, username, first_name, last_name, password, company_id, authority, enabled) VALUES (1, 'aka@o2.pl', 'Jan', 'Marian', '1234', null, 'ROLE_USER', true);
+INSERT INTO users (id, username, first_name, last_name, password, company_id, authority, enabled) VALUES (1, 'aka@o2.pl', 'Jan', 'Marian', '1234', null, 'USER', true);
 
 INSERT INTO invoiceApp.invoice_symbol (id, invoice_number, owner_id) VALUES (2, 0, 1);
 

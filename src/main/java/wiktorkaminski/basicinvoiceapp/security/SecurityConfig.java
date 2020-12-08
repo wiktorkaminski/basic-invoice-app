@@ -8,12 +8,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
-import wiktorkaminski.basicinvoiceapp.repository.UserRepository;
 
 import javax.sql.DataSource;
 
@@ -29,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder encoder() {
-        return new SCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -40,8 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery(
                         "SELECT username, authority from users WHERE username = ?"
                 )
-                .passwordEncoder(new SCryptPasswordEncoder());
-        auth
+                .passwordEncoder(new BCryptPasswordEncoder())
+                .and()
                 .userDetailsService(this.userDetailsService)
                 .passwordEncoder(encoder());
 
@@ -53,6 +51,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/contractor/**", "/invoice/**", "/dashboard/**")
                 .hasRole("USER")
-                .antMatchers("/", "/**").permitAll();
+                .antMatchers("/login/**", "/register/**").permitAll()
+                .and().csrf().disable()
+                .formLogin().loginPage("/login")
+                .defaultSuccessUrl("/dashboard", true)
+        .usernameParameter("username")
+        .passwordParameter("password");
     }
+
+
+
+
 }
