@@ -1,11 +1,13 @@
 package wiktorkaminski.basicinvoiceapp.misc;
 
+import org.springframework.stereotype.Service;
 import wiktorkaminski.basicinvoiceapp.entity.Invoice;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceSymbol;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceSymbolRepository;
 
 import java.time.LocalDate;
 
+@Service
 public class InvoiceSymbolGenerator {
 
     private final InvoiceSymbolRepository invoiceSymbolRepository;

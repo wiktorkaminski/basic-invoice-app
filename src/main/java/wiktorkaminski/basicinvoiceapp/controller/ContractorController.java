@@ -20,8 +20,6 @@ public class ContractorController {
 
     private final ContractorRepository contractorRepository;
 
-    private final Logger logger = LoggerFactory.getLogger(ContractorController.class);
-
     public ContractorController(ContractorRepository contractorRepository) {
         this.contractorRepository = contractorRepository;
     }
@@ -35,7 +33,7 @@ public class ContractorController {
     @PostMapping("/form")
     public String processForm(Contractor contractor) {
         contractorRepository.save(contractor);
-        return "redirect:/";
+        return "redirect:/contractor/list";
     }
 
     @GetMapping("/list")

@@ -1,11 +1,8 @@
 package wiktorkaminski.basicinvoiceapp.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import wiktorkaminski.basicinvoiceapp.entity.Address;
 import wiktorkaminski.basicinvoiceapp.entity.User;
-import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
+import wiktorkaminski.basicinvoiceapp.misc.RegistrationFormProcessor;
 
 @Component
 public class RegistrationForm {
@@ -13,19 +10,18 @@ public class RegistrationForm {
     private String lastName;
     private String username;
     private String password;
-    private String name;
+    private String companyName;
     private String shortName;
-    private Address address;
+    private String country;
+    private String city;
+    private String street;
+    private String zipCode;
+    private String property;
     private String nip;
     private String regon;
     private String phone;
     private String email;
     private String website;
-
-
-    public User toUser(@Autowired PasswordEncoder passwordEncoder) {
-        return new User(firstName, lastName, username, passwordEncoder.encode(password), "ROLE_USER", true);
-    }
 
     public String getFirstName() {
         return firstName;
@@ -59,12 +55,12 @@ public class RegistrationForm {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCompanyName(String name) {
+        this.companyName = name;
     }
 
     public String getShortName() {
@@ -73,14 +69,6 @@ public class RegistrationForm {
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public String getNip() {
@@ -121,5 +109,45 @@ public class RegistrationForm {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
     }
 }

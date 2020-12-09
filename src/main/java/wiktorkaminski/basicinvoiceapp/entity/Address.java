@@ -20,6 +20,17 @@ public class Address {
 
     private String property;
 
+    public Address() {
+    }
+
+    public Address(String country, String city, String street, String zipCode, String property) {
+        this.country = country;
+        this.city = city;
+        this.street = street;
+        this.zipCode = zipCode;
+        this.property = property;
+    }
+
     public Long getId() {
         return id;
     }

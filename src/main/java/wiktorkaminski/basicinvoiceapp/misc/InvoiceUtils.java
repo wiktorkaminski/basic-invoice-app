@@ -1,5 +1,6 @@
 package wiktorkaminski.basicinvoiceapp.misc;
 
+import org.springframework.stereotype.Service;
 import wiktorkaminski.basicinvoiceapp.entity.Invoice;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceProduct;
 import wiktorkaminski.basicinvoiceapp.repository.InvoiceSymbolRepository;
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 
+@Service
 public class InvoiceUtils {
 
     public static double countTotalGrossValue(Invoice invoice) {
