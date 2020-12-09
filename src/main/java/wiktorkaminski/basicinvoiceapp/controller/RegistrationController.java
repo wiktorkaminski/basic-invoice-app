@@ -16,10 +16,12 @@ import wiktorkaminski.basicinvoiceapp.security.RegistrationForm;
 public class RegistrationController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RegistrationFormProcessor registrationFormProcessor;
 
-    public RegistrationController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public RegistrationController(UserRepository userRepository, PasswordEncoder passwordEncoder, RegistrationFormProcessor registrationFormProcessor) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.registrationFormProcessor = registrationFormProcessor;
     }
 
     @GetMapping
@@ -29,7 +31,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String processRegistrationForm(RegistrationForm form, @Autowired RegistrationFormProcessor registrationFormProcessor) {
+    public String processRegistrationForm(RegistrationForm form) {
         registrationFormProcessor.prepareUser(form);
         return "redirect:/login";
     }

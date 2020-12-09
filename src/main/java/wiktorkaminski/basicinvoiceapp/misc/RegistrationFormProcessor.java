@@ -20,7 +20,7 @@ public class RegistrationFormProcessor {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
+
     public RegistrationFormProcessor(ContractorRepository contractorRepository, AddressRepository addressRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.contractorRepository = contractorRepository;
         this.addressRepository = addressRepository;
@@ -53,7 +53,7 @@ public class RegistrationFormProcessor {
         User user = new User(
                 registrationForm.getFirstName(),
                 registrationForm.getLastName(),
-                registrationForm.getLastName(),
+                registrationForm.getUsername(),
                 passwordEncoder.encode(registrationForm.getPassword()),
                 "ROLE_USER",
                 true,
