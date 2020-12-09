@@ -55,5 +55,10 @@
         </tr>
     </c:forEach>
 </table>
+<br/>
+<p>Options:</p>
+<a href="${pageContext.request.contextPath}/dashboard"> >Dashboard< </a>
+<a href="${pageContext.request.contextPath}/invoice/new-invoice-step-1-1"> >New invoice< </a>
+<br/>
 </body>
 </html>

@@ -2,9 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
-<head>
-    <title>New invoice</title>
-</head>
 <body>
 
 <form:form modelAttribute="invoice" method="POST" action="/invoice/new-invoice-step-3">
@@ -19,6 +16,7 @@
 
     Seler:
     <br/>
+    <form:hidden path="seller"/>
     <c:out value="${invoice.seller.name}"/> <br/>
     <c:out value="${invoice.seller.street} ${invoice.seller.property}"/> <br/>
     <c:out value="${invoice.seller.zipCode} ${invoice.seller.city}"/> <br/>
@@ -49,4 +47,7 @@
 </form:form>
 
 </body>
+<head>
+    <title>New invoice</title>
+</head>
 </html>

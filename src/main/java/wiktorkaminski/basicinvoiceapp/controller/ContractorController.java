@@ -2,15 +2,20 @@ package wiktorkaminski.basicinvoiceapp.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
+import wiktorkaminski.basicinvoiceapp.entity.User;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
+import wiktorkaminski.basicinvoiceapp.repository.UserRepository;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -19,9 +24,11 @@ import java.util.NoSuchElementException;
 public class ContractorController {
 
     private final ContractorRepository contractorRepository;
+    private final UserRepository userRepository;
 
-    public ContractorController(ContractorRepository contractorRepository) {
+    public ContractorController(ContractorRepository contractorRepository, UserRepository userRepository) {
         this.contractorRepository = contractorRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/form")
@@ -31,16 +38,21 @@ public class ContractorController {
     }
 
     @PostMapping("/form")
-    public String processForm(Contractor contractor) {
+    public String processForm(Contractor contractor, SessionStatus sessionStatus, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        contractor.setOwner(user);
         contractorRepository.save(contractor);
+        sessionStatus.setComplete();
         return "redirect:/contractor/list";
     }
 
     @GetMapping("/list")
-    public String showAllContractors(Model model) {
-        List<Contractor> contractors = contractorRepository.findAll();
+    public String showAllContractors(Model model, SessionStatus sessionStatus, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        List<Contractor> contractors = contractorRepository.getAllByOwner(user);
         model.addAttribute("contractors", contractors);
-        return "/contractor/list";
+        sessionStatus.setComplete();
+        return "contractor/list";
     }
 
     @PostMapping("/update")

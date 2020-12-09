@@ -28,5 +28,7 @@ INSERT INTO `invoice_product_list_product_list` VALUES (1,2);
 INSERT INTO `invoice_symbol` VALUES (2,0,2);
 
 
-INSERT INTO `invoices` VALUES (1,0,'2020-12-01 14:27:08.000000','Computer service on Rozdzienskiego Street 222','2021-01-31','2020-12-01','0/2020',NULL,1,1,2,2);
+INSERT INTO `invoices` VALUES (1,0,'2020-12-01 14:27:08.000000','Computer service on Rozdzienskiego Street 222','2021-01-31','2020-12-01','1/11/2020',NULL,1,1,1,2);
+INSERT INTO `invoices` VALUES (1,0,'2020-12-01 14:27:08.000000','Computer service on Rozdzienskiego Street 222','2021-01-31','2020-12-01','1/11/2020',NULL,1,1,1,2);
+INSERT INTO `invoices` VALUES (1,0,'2020-12-01 14:27:08.000000','Computer service on Rozdzienskiego Street 222','2021-01-31','2020-12-01','1/11/2020',NULL,1,1,2,2);
 

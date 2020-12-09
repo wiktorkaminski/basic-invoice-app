@@ -12,9 +12,6 @@
 <form method="GET" action="/contractor/list">
    <button type="submit">Contractors</button>
 </form>
-<form>
-   <button type="submit">Products</button>
-</form>
 <br/>
 <br/>
 <form method="POST" action="/logout">

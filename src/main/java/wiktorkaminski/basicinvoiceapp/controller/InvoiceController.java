@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 import wiktorkaminski.basicinvoiceapp.DTO.ContractorDto;
 import wiktorkaminski.basicinvoiceapp.DTO.InvoiceDto;
 import wiktorkaminski.basicinvoiceapp.converter.ContractorConverter;
@@ -17,6 +18,7 @@ import wiktorkaminski.basicinvoiceapp.misc.InvoiceUtils;
 import wiktorkaminski.basicinvoiceapp.misc.SymbolGenerator;
 import wiktorkaminski.basicinvoiceapp.repository.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,26 +86,32 @@ public class InvoiceController {
     }
 
     @PostMapping("/new-invoice-step-2")
-    public String newInvoiceStep2(Model model, @RequestParam Long listId) {
+    public String newInvoiceStep2(Model model, @RequestParam Long listId, SessionStatus sessionStatus, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        InvoiceContractor invoiceSeller = ContractorConverter.convertToInvoiceContractor(user.getCompany());
+        InvoiceContractor savedInvoiceSeller = invoiceContractorRepo.save(invoiceSeller);
+
         Invoice newInvoice = new Invoice();
         newInvoice.setSaleDate(LocalDate.now());
-        newInvoice.setSeller(new InvoiceContractor());
+        newInvoice.setSeller(savedInvoiceSeller);
         newInvoice.setInvoiceProductList(invoiceProductListRepo.findById(listId).orElseThrow(NoSuchElementException::new));
         model.addAttribute("invoice", newInvoice);
-        model.addAttribute("contractors", contractorRepository.findAll());
+        model.addAttribute("contractors", contractorRepository.getAllByOwner(user));
+
+        sessionStatus.setComplete();
         return "invoice/new-invoice-step-2";
     }
 
     @PostMapping("/new-invoice-step-3")
-    public String newInvoiceStep3(Model model, Invoice invoice, Long buyerId) {
+    public String newInvoiceStep3(Invoice invoice, Long buyerId, SessionStatus sessionStatus, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+
         Contractor buyer = contractorRepository.findById(buyerId).orElseThrow(NoSuchElementException::new);
         InvoiceContractor invoiceBuyer = ContractorConverter.convertToInvoiceContractor(buyer);
         invoiceBuyer = invoiceContractorRepo.save(invoiceBuyer);
 
-        invoice.setOwner(userRepository.findById(1L).orElseThrow(NoSuchElementException::new));
-        // TODO change set owner
         invoice.setBuyer(invoiceBuyer);
-
+        invoice.setOwner(user);
         String invoiceSymbol = symbolGenerator.generate(invoice);
         invoice.setSymbol(invoiceSymbol);
 
@@ -113,8 +121,10 @@ public class InvoiceController {
     }
 
     @GetMapping("/list")
-    public String invoiceList(Model model) {
-        model.addAttribute("invoices", invoiceRepository.findAll());
+    public String invoiceList(Model model, SessionStatus sessionStatus, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName());
+        model.addAttribute("invoices", invoiceRepository.findAllByOwner(user));
+        sessionStatus.setComplete();
         return "/invoice/list";
     }
 }
