@@ -52,14 +52,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/contractor/**", "/invoice/**", "/dashboard/**")
                 .hasRole("USER")
                 .antMatchers("/login/**", "/register/**").permitAll()
-                .and().csrf().disable()
+                .and()
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/dashboard", true)
-        .usernameParameter("username")
-        .passwordParameter("password");
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .and().csrf().disable()
+                .logout()
+                .logoutSuccessUrl("/login");
+
     }
-
-
 
 
 }
