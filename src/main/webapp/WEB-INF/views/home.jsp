@@ -6,10 +6,10 @@
 <h2>
    Hello, what do you want to do today?
 </h2>
-<form>
+<form method="GET" action="${pageContext.request.contextPath}/invoice/list">
    <button type="submit">Invoices</button>
 </form>
-<form method="GET" action="/contractor/list">
+<form method="GET" action="${pageContext.request.contextPath}/contractor/list">
    <button type="submit">Contractors</button>
 </form>
 <br/>

@@ -103,7 +103,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/new-invoice-step-3")
-    public String newInvoiceStep3(Invoice invoice, Long buyerId, SessionStatus sessionStatus, Principal principal) {
+    public String newInvoiceStep3(Model model, Invoice invoice, Long buyerId, SessionStatus sessionStatus, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
 
         Contractor buyer = contractorRepository.findById(buyerId).orElseThrow(NoSuchElementException::new);
@@ -116,8 +116,9 @@ public class InvoiceController {
         invoice.setSymbol(invoiceSymbol);
 
         Invoice savedInvoice = invoiceRepository.save(invoice);
+        model.addAttribute("invoice", savedInvoice);
 
-        return "redirect:/invoice/list";
+        return "/invoice/new-invoice-summary";
     }
 
     @GetMapping("/list")

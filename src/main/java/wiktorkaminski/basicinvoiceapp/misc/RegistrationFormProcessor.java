@@ -1,14 +1,14 @@
 package wiktorkaminski.basicinvoiceapp.misc;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import wiktorkaminski.basicinvoiceapp.entity.Address;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
+import wiktorkaminski.basicinvoiceapp.entity.InvoiceSymbol;
 import wiktorkaminski.basicinvoiceapp.entity.User;
 import wiktorkaminski.basicinvoiceapp.repository.AddressRepository;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
+import wiktorkaminski.basicinvoiceapp.repository.InvoiceSymbolRepository;
 import wiktorkaminski.basicinvoiceapp.repository.UserRepository;
 import wiktorkaminski.basicinvoiceapp.security.RegistrationForm;
 
@@ -18,13 +18,15 @@ public class RegistrationFormProcessor {
     private final ContractorRepository contractorRepository;
     private final AddressRepository addressRepository;
     private final UserRepository userRepository;
+    private final InvoiceSymbolRepository invoiceSymbolRepository;
     private final PasswordEncoder passwordEncoder;
 
 
-    public RegistrationFormProcessor(ContractorRepository contractorRepository, AddressRepository addressRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public RegistrationFormProcessor(ContractorRepository contractorRepository, AddressRepository addressRepository, UserRepository userRepository, InvoiceSymbolRepository invoiceSymbolRepository, PasswordEncoder passwordEncoder) {
         this.contractorRepository = contractorRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
+        this.invoiceSymbolRepository = invoiceSymbolRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -63,6 +65,10 @@ public class RegistrationFormProcessor {
 
         savedUserCompany.setOwner(savedUser);
         contractorRepository.save(savedUserCompany);
+
+        InvoiceSymbol newUserSymbol = new InvoiceSymbol();
+        newUserSymbol.setOwner(savedUser);
+        invoiceSymbolRepository.save(newUserSymbol);
 
         return savedUser;
     }

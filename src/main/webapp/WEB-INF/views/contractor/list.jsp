@@ -25,9 +25,6 @@
         <th>
             Details
         </th>
-        <th>
-            Quick invoice
-        </th>
     </tr>
     <c:forEach items="${contractors}" var="contractor">
         <tr>
@@ -57,8 +54,8 @@
 </table>
 <br/>
 <p>Options:</p>
-<a href="${pageContext.request.contextPath}/dashboard"> >Dashboard< </a>
-<a href="${pageContext.request.contextPath}/invoice/new-invoice-step-1-1"> >New invoice< </a>
-<br/>
+<a href="${pageContext.request.contextPath}/contractor/form"> New contractor </a>
+<%@ include file="/WEB-INF/jspf/options.jspf" %>
+
 </body>
 </html>

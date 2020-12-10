@@ -1,11 +1,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
     <title>Register</title>
 </head>
 <body>
 <h3>Register form - type in user and company data</h3>
+<c:if test="${not empty userExistsErr}">
+    <p style="color: red">
+        <c:out value="${userExistsErr}"/>
+    </p>
+</c:if>
 <form:form modelAttribute="registrationForm" action="/register" method="POST">
     <form:label path="username">Email: </form:label>
     <form:input path="username"/>

@@ -6,6 +6,8 @@
     <title>Invoices</title>
 </head>
 <body>
+
+<br/>
 <table>
     <tr>
         <th>
@@ -44,5 +46,6 @@
         </tr>
     </c:forEach>
 </table>
+<%@ include file="/WEB-INF/jspf/options.jspf" %>
 </body>
 </html>
