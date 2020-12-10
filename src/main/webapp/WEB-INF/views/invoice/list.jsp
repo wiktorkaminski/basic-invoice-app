@@ -43,6 +43,11 @@
             <td>
                 <fmt:formatNumber value="${invoice.netValue}" minFractionDigits="2" maxFractionDigits="2"/>
             </td>
+            <td>
+                <form method="GET" action="${pageContext.request.contextPath}/invoice/details/${invoice.symbol}">
+                    <input type="submit" value="Show">
+                </form>
+            </td>
         </tr>
     </c:forEach>
 </table>

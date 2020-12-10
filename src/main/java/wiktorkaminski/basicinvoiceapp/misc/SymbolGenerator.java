@@ -22,6 +22,6 @@ public class SymbolGenerator {
         invoiceSymbolRepo.save(invoiceSymbol);
         int month = invoice.getSaleDate().getMonth().getValue();
         int year = invoice.getSaleDate().getYear();
-        return String.join("/", String.valueOf(nextInvoiceNumber), String.valueOf(month), String.valueOf(year));
+        return String.join("-", String.valueOf(nextInvoiceNumber), String.valueOf(month), String.valueOf(year));
     }
 }

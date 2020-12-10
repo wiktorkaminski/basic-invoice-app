@@ -8,5 +8,7 @@ import java.util.List;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Long> {
 
-    public List<Invoice> findAllByOwner(User user);
+    public List<Invoice> findAllByOwner(User owner);
+
+    public Invoice findFirstBySymbolAndOwner(String symbol, User owner);
 }

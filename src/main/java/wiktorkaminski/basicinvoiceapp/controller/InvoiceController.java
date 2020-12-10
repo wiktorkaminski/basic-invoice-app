@@ -5,16 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import wiktorkaminski.basicinvoiceapp.DTO.ContractorDto;
-import wiktorkaminski.basicinvoiceapp.DTO.InvoiceDto;
 import wiktorkaminski.basicinvoiceapp.converter.ContractorConverter;
 import wiktorkaminski.basicinvoiceapp.entity.*;
-import wiktorkaminski.basicinvoiceapp.misc.InvoiceUtils;
 import wiktorkaminski.basicinvoiceapp.misc.SymbolGenerator;
 import wiktorkaminski.basicinvoiceapp.repository.*;
 
@@ -103,7 +97,7 @@ public class InvoiceController {
     }
 
     @PostMapping("/new-invoice-step-3")
-    public String newInvoiceStep3(Model model, Invoice invoice, Long buyerId, SessionStatus sessionStatus, Principal principal) {
+    public String newInvoiceStep3(Invoice invoice, Long buyerId, SessionStatus sessionStatus, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
 
         Contractor buyer = contractorRepository.findById(buyerId).orElseThrow(NoSuchElementException::new);
@@ -116,9 +110,9 @@ public class InvoiceController {
         invoice.setSymbol(invoiceSymbol);
 
         Invoice savedInvoice = invoiceRepository.save(invoice);
-        model.addAttribute("invoice", savedInvoice);
+        String redirectPath = String.join("/", "redirect:", "invoice/details", savedInvoice.getSymbol());
 
-        return "/invoice/new-invoice-summary";
+        return redirectPath;
     }
 
     @GetMapping("/list")
@@ -127,5 +121,17 @@ public class InvoiceController {
         model.addAttribute("invoices", invoiceRepository.findAllByOwner(user));
         sessionStatus.setComplete();
         return "/invoice/list";
+    }
+
+    @GetMapping("/details/{invoiceSymbol}")
+    public String showInvoiceDetails(Model model, SessionStatus sessionStatus, Principal principal, @PathVariable String invoiceSymbol) {
+        User user = userRepository.findByUsername(principal.getName());
+        Invoice invoice = invoiceRepository.findFirstBySymbolAndOwner(invoiceSymbol, user);
+        if (invoice == null) {
+            return "redirect:/invoice/list";
+        }
+        model.addAttribute("invoice", invoice);
+        sessionStatus.setComplete();
+        return "invoice/details";
     }
 }

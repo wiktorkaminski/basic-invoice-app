@@ -9,14 +9,14 @@
 <div class="tg-wrap">
     <table style="undefined;table-layout: fixed; width: 989px">
         <colgroup>
-            <col style="width: 259px">
-            <col style="width: 193px">
-            <col style="width: 71px">
-            <col style="width: 87px">
-            <col style="width: 48px">
-            <col style="width: 48px">
-            <col style="width: 138px">
-            <col style="width: 193px">
+            <col style="width: 260px">
+            <col style="width: 260px">
+            <col style="width: 70px">
+            <col style="width: 70px">
+            <col style="width: 50px">
+            <col style="width: 50px">
+            <col style="width: 150px">
+            <col style="width: 200px">
         </colgroup>
         <thead>
         <tr>
@@ -45,7 +45,7 @@
                 <c:out value="${invoice.seller.name}"/> <br/>
                 <c:out value="${invoice.seller.street} ${invoice.seller.property}"/> <br/>
                 <c:out value="${invoice.seller.zipCode} ${invoice.seller.city}"/> <br/>
-                <c:out value="${invoice.seller.nip}"/> <br/>
+                NIP: <c:out value="${invoice.seller.nip}"/> <br/>
                 <c:out value="${invoice.seller.email}"/> <br/>
             </td>
             <td>
@@ -53,7 +53,7 @@
                 <c:out value="${invoice.buyer.name}"/> <br/>
                 <c:out value="${invoice.buyer.street} ${invoice.buyer.property}"/> <br/>
                 <c:out value="${invoice.buyer.zipCode} ${invoice.buyer.city}"/> <br/>
-                <c:out value="${invoice.buyer.nip}"/> <br/>
+                NIP: <c:out value="${invoice.buyer.nip}"/> <br/>
                 <c:out value="${invoice.buyer.email}"/> <br/>
             </td>
             <td></td>
@@ -72,20 +72,20 @@
             <td>Net value<br></td>
             <td>Gross value<br></td>
         </tr>
-        <tr>
             <c:forEach items="${invoice.invoiceProductList.productList}" var="product">
-                <td colspan="2">${product.name}</td>
-                <td><c:out value="${product.units}"/><br></td>
-                <td><c:out value="${product.price}"/></td>
-                <td><c:out value="${product.quantity}"/></td>
-                <td><c:out value="${product.vatRate}"/></td>
-                <td>
-                    <fmt:formatNumber value="${product.price * product.quantity}" minFractionDigits="2" maxFractionDigits="2"/>
-                    <br>
-                </td>
-                <td><fmt:formatNumber value="${product.price * product.quantity * (1+product.vatRate * 0.01)}" minFractionDigits="2" maxFractionDigits="2"/></td>
+                <tr>
+                    <td colspan="2">${product.name}</td>
+                    <td><c:out value="${product.units}"/><br></td>
+                    <td><c:out value="${product.price}"/></td>
+                    <td><c:out value="${product.quantity}"/></td>
+                    <td><c:out value="${product.vatRate}"/></td>
+                    <td>
+                        <fmt:formatNumber value="${product.price * product.quantity}" minFractionDigits="2" maxFractionDigits="2"/>
+                        <br>
+                    </td>
+                    <td><fmt:formatNumber value="${product.price * product.quantity * (1+product.vatRate * 0.01)}" minFractionDigits="2" maxFractionDigits="2"/></td>
+                </tr>
             </c:forEach>
-        </tr>
         <tr>
             <td></td>
             <td></td>
@@ -94,7 +94,7 @@
             <td></td>
             <td></td>
             <td>Total net:</td>
-            <td><c:out value="${invoice.netValue}"/></td>
+            <td><fmt:formatNumber value="${invoice.netValue}" minFractionDigits="2" maxFractionDigits="2"/></td>
         </tr>
         <tr>
             <td></td>
@@ -104,7 +104,7 @@
             <td></td>
             <td></td>
             <td>Total gross:</td>
-            <td><c:out value="${invoice.grossValue}"/></td>
+            <td><fmt:formatNumber value="${invoice.grossValue}" minFractionDigits="2" maxFractionDigits="2"/></td>
         </tr>
         <tr>
             <td></td>
@@ -114,7 +114,7 @@
             <td></td>
             <td></td>
             <td>Amount paid<br></td>
-            <td>${invoice.amountPaid}<br></td>
+            <td><fmt:formatNumber value="${invoice.amountPaid}" minFractionDigits="2" maxFractionDigits="2"/><br></td>
         </tr>
         <tr>
             <td></td>
@@ -124,10 +124,14 @@
             <td></td>
             <td></td>
             <td>Remaining payment: <br></td>
-            <td><c:out value="${invoice.amountToPay}">t<br></td>
+            <td><fmt:formatNumber value="${invoice.amountToPay}" minFractionDigits="2" maxFractionDigits="2"/><br></td>
         </tr>
         <tr>
-            <td colspan="3">Notes:<br>${invoice.notes}</td>
+            <td colspan="3">
+                <c:if test="${not empty invoice.notes}">
+                    Notes:<c:out value="${invoice.notes}"/>
+                </c:if>
+            </td>
             <td></td>
             <td></td>
             <td></td>
@@ -141,7 +145,7 @@
     <br/>
     <br/>
 <p>Options:</p>
-<a href="${pageContext.request.contextPath}/contractor/form"> New contractor </a>
+<a href="${pageContext.request.contextPath}/invoice/list"> Invoice list </a>
 <%@ include file="/WEB-INF/jspf/options.jspf" %>
 </body>
 </html>
