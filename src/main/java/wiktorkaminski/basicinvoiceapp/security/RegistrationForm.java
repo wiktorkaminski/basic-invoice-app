@@ -1,26 +1,60 @@
 package wiktorkaminski.basicinvoiceapp.security;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
+import org.hibernate.validator.constraints.pl.NIP;
+import org.hibernate.validator.constraints.pl.REGON;
 import org.springframework.stereotype.Component;
-import wiktorkaminski.basicinvoiceapp.entity.User;
-import wiktorkaminski.basicinvoiceapp.misc.RegistrationFormProcessor;
+
+import javax.validation.constraints.*;
 
 @Component
 public class RegistrationForm {
+
+    @NotBlank
     private String firstName;
+
+    @NotBlank
     private String lastName;
+
+    @NotBlank
+    @Email
     private String username;
+
+    @NotBlank
+    @Length(min = 8, message = "Password must have at least 8 characters.")
     private String password;
+
+    @NotBlank
     private String companyName;
     private String shortName;
     private String country;
+
+    @NotBlank
     private String city;
+
+    @NotBlank
     private String street;
+
+    @Pattern(regexp = "[0-9]{2}-[0-9]{3}", message = "Zip Code has to match XX-XXX eg. 00-100")
     private String zipCode;
+
+    @NotNull
     private String property;
+
+    @NotBlank
+    @NIP
     private String nip;
+    @NotBlank
+
+    @REGON
     private String regon;
     private String phone;
+
+    @Email
     private String email;
+
+    @URL
     private String website;
 
     public String getFirstName() {

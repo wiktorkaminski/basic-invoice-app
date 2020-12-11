@@ -3,6 +3,7 @@ package wiktorkaminski.basicinvoiceapp.entity;
 import wiktorkaminski.basicinvoiceapp.misc.InvoiceUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.Future;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
