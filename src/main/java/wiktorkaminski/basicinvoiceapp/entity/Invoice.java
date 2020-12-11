@@ -3,7 +3,7 @@ package wiktorkaminski.basicinvoiceapp.entity;
 import wiktorkaminski.basicinvoiceapp.misc.InvoiceUtils;
 
 import javax.persistence.*;
-import javax.validation.constraints.Future;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -31,10 +31,16 @@ public class Invoice {
 
     private LocalDateTime updatedOn;
 
+    @NotNull
+    @PastOrPresent
     private LocalDate saleDate;
 
+    @NotNull
+    @FutureOrPresent
     private LocalDate paymentDate;
 
+    @PositiveOrZero
+    @Digits(integer = 8, fraction = 2, message = "Max 2 friction digits")
     private double amountPaid;
 
     @OneToOne

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import wiktorkaminski.basicinvoiceapp.converter.ContractorConverter;
@@ -12,6 +13,7 @@ import wiktorkaminski.basicinvoiceapp.entity.*;
 import wiktorkaminski.basicinvoiceapp.misc.SymbolGenerator;
 import wiktorkaminski.basicinvoiceapp.repository.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -63,7 +65,15 @@ public class InvoiceController {
     }
 
     @PostMapping("/new-invoice-step-1-2")
-    public String newInvoiceStep1_2(Model model, InvoiceProduct invoiceProduct, @RequestParam Long listId) {
+    public String newInvoiceStep1_2(Model model, @Valid InvoiceProduct invoiceProduct, BindingResult validationResult, @RequestParam Long listId) {
+
+        if (validationResult.hasErrors()) {
+            model.addAttribute("units", units);
+            model.addAttribute("vatRate", vatRate);
+            model.addAttribute("listId", listId);
+            return "invoice/new-invoice-step-1";
+        }
+
         InvoiceProductList invoiceProductList;
         if (listId == -1) {
             invoiceProductList = new InvoiceProductList();
@@ -82,6 +92,7 @@ public class InvoiceController {
     @PostMapping("/new-invoice-step-2")
     public String newInvoiceStep2(Model model, @RequestParam Long listId, SessionStatus sessionStatus, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
+
         InvoiceContractor invoiceSeller = ContractorConverter.convertToInvoiceContractor(user.getCompany());
         InvoiceContractor savedInvoiceSeller = invoiceContractorRepo.save(invoiceSeller);
 
@@ -97,8 +108,16 @@ public class InvoiceController {
     }
 
     @PostMapping("/new-invoice-step-3")
-    public String newInvoiceStep3(Invoice invoice, Long buyerId, SessionStatus sessionStatus, Principal principal) {
+    public String newInvoiceStep3(Model model, @Valid Invoice invoice, BindingResult validationResult, Long buyerId, SessionStatus sessionStatus, Principal principal) {
         User user = userRepository.findByUsername(principal.getName());
+
+        if (validationResult.hasErrors() || buyerId == -1) {
+            if (buyerId == -1) {
+                model.addAttribute("buyerErr", "Select buyer");
+            }
+            model.addAttribute("contractors", contractorRepository.getAllByOwner(user));
+            return "invoice/new-invoice-step-2";
+        }
 
         Contractor buyer = contractorRepository.findById(buyerId).orElseThrow(NoSuchElementException::new);
         InvoiceContractor invoiceBuyer = ContractorConverter.convertToInvoiceContractor(buyer);
@@ -110,6 +129,8 @@ public class InvoiceController {
         invoice.setSymbol(invoiceSymbol);
 
         Invoice savedInvoice = invoiceRepository.save(invoice);
+        sessionStatus.setComplete();
+
         String redirectPath = String.join("/", "redirect:", "invoice/details", savedInvoice.getSymbol());
 
         return redirectPath;

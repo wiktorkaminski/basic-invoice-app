@@ -22,7 +22,7 @@ public class RegistrationForm {
     private String username;
 
     @NotBlank
-    @Length(min = 8, message = "Password must have at least 8 characters.")
+    @Length(min = 8, max = 40, message = "Password must have at least 8 characters (max 40)")
     private String password;
 
     @NotBlank

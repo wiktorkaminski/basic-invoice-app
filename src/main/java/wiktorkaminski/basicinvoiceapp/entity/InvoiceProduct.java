@@ -1,6 +1,8 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Positive;
 
 @Entity
 public class InvoiceProduct {
@@ -13,8 +15,12 @@ public class InvoiceProduct {
 
     private String units;
 
+    @Positive
+    @Digits(integer = 8, fraction = 3, message = "Max 3 friction digits")
     private double quantity;
 
+    @Positive
+    @Digits(integer = 8, fraction = 2, message = "Max 2 friction digits")
     private double price;
 
     private byte vatRate;

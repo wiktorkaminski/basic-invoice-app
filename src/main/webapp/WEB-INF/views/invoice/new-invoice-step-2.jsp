@@ -6,36 +6,44 @@
 
 <form:form modelAttribute="invoice" method="POST" action="/invoice/new-invoice-step-3">
 
-    <form:label path="saleDate">Input date of transaction:</form:label>
+    <form:label path="saleDate">Input date of transaction (dd/mm/yyyy): </form:label>
     <br/>
     <form:input path="saleDate"/>
+    <form:errors path="saleDate" cssStyle="color: red"/>
     <br/>
-    <form:label path="paymentDate">Input payment date:</form:label>
+    <form:label path="paymentDate">Input payment date (dd/mm/yyyy):</form:label>
     <br/>
-    <form:input path="paymentDate"/><br/>
-
-    Seler:
+    <form:input path="paymentDate"/>
+    <form:errors path="paymentDate" cssStyle="color: red"/>
+    <br/>
+    <br/>
+    Seller:
     <br/>
     <form:hidden path="seller"/>
     <c:out value="${invoice.seller.name}"/> <br/>
     <c:out value="${invoice.seller.street} ${invoice.seller.property}"/> <br/>
     <c:out value="${invoice.seller.zipCode} ${invoice.seller.city}"/> <br/>
     <c:out value="${invoice.seller.nip}"/> <br/>
-    <c:out value="${invoice.seller.email}"/> <br/>
+    <c:out value="${invoice.seller.email}"/> <br/><br/>
 
     <label for="buyer">Buyer:</label>
     <br/>
     <select name="buyerId" id="buyer">
-        <option value="-">-- please select --</option>
+        <option value="-1">-- please select --</option>
         <c:forEach items="${contractors}" var="contractor">
             <option value="${contractor.id}">${contractor.label}</option>
         </c:forEach>
     </select>
-    <br/>
+    <c:if test="${not empty buyerErr}">
+        <p style="color: red">
+        ${buyerErr}</c:if>
+        </p>
+    <br/><br/>
 
     <form:label path="amountPaid">Amount paid: </form:label>
     <br/>
     <form:input path="amountPaid"/>
+    <form:errors path="amountPaid" cssStyle="color: red"/>
     <br/>
     <form:label path="notes">Notes: </form:label>
     <form:textarea path="notes" rows="4"/>
