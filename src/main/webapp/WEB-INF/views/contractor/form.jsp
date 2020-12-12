@@ -6,6 +6,7 @@
     <title>Contractor form</title>
 </head>
 <body>
+
 <form:form modelAttribute="contractor" method="POST" action="/contractor/form">
     <form:hidden path="id"/>
     Contractor
