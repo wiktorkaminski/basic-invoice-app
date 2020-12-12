@@ -28,7 +28,7 @@ public class GusResponseProcessor {
             RootAddress addressPart = (RootAddress) addressContext.createUnmarshaller().unmarshal(new StringReader(gusResponse));
             Address address = addressPart.getAddress();
             RootProperty propertyPart = (RootProperty) propertyContext.createUnmarshaller().unmarshal(new StringReader(gusResponse));
-            String property = propertyPart.toString();
+            String property = propertyPart.getProperty().toString();
             address.setProperty(property);
             contractor.setAddress(address);
             return contractor;

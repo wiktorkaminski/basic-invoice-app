@@ -16,7 +16,8 @@ import static java.util.Collections.singletonMap;
 @Service
 public class GusConnector {
 
-    private final String API_KEY = "abcde12345abcde12345";
+    private final UslugaBIRzewnPubl service = new UslugaBIRzewnPubl();
+    private final String API_KEY = "f157ac544a7847ff8a1c";
     private String sessionKey;
 
     public String findContractorByNip(String nip) {
@@ -34,7 +35,8 @@ public class GusConnector {
         ParametryWyszukiwania parametryWyszukiwania = new ParametryWyszukiwania();
         parametryWyszukiwania.setNip(parametryWyszukiwaniaNip);
 
-        String result = port.daneSzukaj(parametryWyszukiwania);
+        String result = port.daneSzukajPodmioty(parametryWyszukiwania);
+
         port.wyloguj(sessionKey);
 
         return result;

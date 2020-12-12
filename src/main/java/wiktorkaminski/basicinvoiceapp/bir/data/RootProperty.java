@@ -5,21 +5,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "root")
 public class RootProperty {
-    String houseNo;
-    String flatNo;
 
-    @XmlElement(name = "NrNieruchomosci")
-    public String getHouseNo() {
-        return houseNo;
+    private Property property;
+
+    @XmlElement(name = "dane")
+    public Property getProperty() {
+        return property;
     }
 
-    @XmlElement(name = "NrLokalu")
-    public String getFlatNo() {
-        return flatNo;
-    }
-
-    @Override
-    public String toString() {
-        return flatNo == null ? houseNo : String.join("/", houseNo, flatNo);
+    public void setProperty(Property property) {
+        this.property = property;
     }
 }
