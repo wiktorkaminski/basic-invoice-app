@@ -1,6 +1,7 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 
 @Entity
 @Table(name = "contractors")
@@ -55,6 +56,7 @@ public class Contractor {
         this.id = id;
     }
 
+    @XmlElement(name = "Nazwa")
     public String getName() {
         return name;
     }
@@ -79,6 +81,7 @@ public class Contractor {
         this.address = address;
     }
 
+    @XmlElement(name = "Nip")
     public String getNip() {
         return nip;
     }
@@ -87,6 +90,7 @@ public class Contractor {
         this.nip = nip;
     }
 
+    @XmlElement(name = "Regon")
     public String getRegon() {
         return regon;
     }
@@ -130,7 +134,5 @@ public class Contractor {
     public String getLabel() {
         return String.join(" ", shortName, name, address.getCity(), nip);
     }
-
-
 
 }

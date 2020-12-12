@@ -12,7 +12,7 @@
     Contractor
     <br/>
     <form:label path="name">Name: </form:label>
-    <form:input path="name"/>
+    <form:input path="name" size="100"/>
     <br/>
     <form:label path="shortName">Shortened name: </form:label>
     <form:input path="shortName"/>

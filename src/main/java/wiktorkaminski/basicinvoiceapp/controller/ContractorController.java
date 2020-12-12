@@ -1,28 +1,24 @@
 package wiktorkaminski.basicinvoiceapp.controller;
 
-import org.hibernate.validator.constraints.pl.NIP;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import wiktorkaminski.basicinvoiceapp.bir.GusConnector;
+import wiktorkaminski.basicinvoiceapp.bir.GusResponseProcessor;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
 import wiktorkaminski.basicinvoiceapp.entity.User;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
 import wiktorkaminski.basicinvoiceapp.repository.UserRepository;
 
-import javax.validation.Valid;
-import javax.xml.ws.BindingProvider;
 import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/contractor")
@@ -96,9 +92,13 @@ public class ContractorController {
     }
 
     @PostMapping("/bir/search")
-    @ResponseBody
-    public String processBirQuery(@RequestParam String nip) {
-        return gusConnector.findContractorByNip(nip);
+    public String processBirQuery(Model model, @RequestParam String nip) {
+
+        String gusResponse = gusConnector.findContractorByNip(nip);
+        Contractor contractor = GusResponseProcessor.bind(gusResponse);
+        model.addAttribute("contractor", contractor);
+        return "contractor/form";
+
     }
 
 }

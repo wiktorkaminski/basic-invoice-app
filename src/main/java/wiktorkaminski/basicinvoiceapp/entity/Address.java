@@ -1,6 +1,7 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 
 @Entity
 @Table(name = "addresses")
@@ -47,6 +48,7 @@ public class Address {
         this.country = country;
     }
 
+    @XmlElement(name = "Miejscowosc")
     public String getCity() {
         return city;
     }
@@ -55,6 +57,7 @@ public class Address {
         this.city = city;
     }
 
+    @XmlElement(name = "Ulica")
     public String getStreet() {
         return street;
     }
@@ -63,6 +66,7 @@ public class Address {
         this.street = street;
     }
 
+    @XmlElement(name = "KodPocztowy")
     public String getZipCode() {
         return zipCode;
     }
@@ -75,9 +79,10 @@ public class Address {
         return property;
     }
 
-    public void setProperty(String flat) {
-        this.property = flat;
+    public void setProperty(String property) {
+        this.property = property;
     }
+
 
     public String getFullAddress() {
         return String.join(" ", street, property, zipCode, city);
