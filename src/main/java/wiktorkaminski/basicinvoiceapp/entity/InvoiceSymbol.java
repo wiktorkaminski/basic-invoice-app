@@ -1,8 +1,5 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import wiktorkaminski.basicinvoiceapp.repository.InvoiceSymbolRepository;
-
 import javax.persistence.*;
 
 @Entity

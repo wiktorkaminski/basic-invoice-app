@@ -1,6 +1,5 @@
 package wiktorkaminski.basicinvoiceapp.misc;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import wiktorkaminski.basicinvoiceapp.entity.Invoice;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceSymbol;

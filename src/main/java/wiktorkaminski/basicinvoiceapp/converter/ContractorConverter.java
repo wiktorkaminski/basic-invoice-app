@@ -1,7 +1,6 @@
 package wiktorkaminski.basicinvoiceapp.converter;
 
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
-import wiktorkaminski.basicinvoiceapp.entity.Invoice;
 import wiktorkaminski.basicinvoiceapp.entity.InvoiceContractor;
 
 public class ContractorConverter {

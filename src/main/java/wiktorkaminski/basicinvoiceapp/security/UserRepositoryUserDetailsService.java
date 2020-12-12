@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import wiktorkaminski.basicinvoiceapp.entity.User;
 import wiktorkaminski.basicinvoiceapp.repository.UserRepository;
@@ -14,7 +13,7 @@ import wiktorkaminski.basicinvoiceapp.repository.UserRepository;
 @Qualifier("UserRepositoryUserDetailsService")
 public class UserRepositoryUserDetailsService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserRepositoryUserDetailsService(UserRepository userRepository) {

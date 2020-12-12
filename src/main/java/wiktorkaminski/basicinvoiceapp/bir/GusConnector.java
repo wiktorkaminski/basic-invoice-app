@@ -16,17 +16,19 @@ import static java.util.Collections.singletonMap;
 @Service
 public class GusConnector {
 
-    private final UslugaBIRzewnPubl service = new UslugaBIRzewnPubl();
+    private final UslugaBIRzewnPubl SERVICE = new UslugaBIRzewnPubl();
+    private final IUslugaBIRzewnPubl PORT;
     private final String API_KEY = "f157ac544a7847ff8a1c";
     private String sessionKey;
 
+    public GusConnector() {
+        this.PORT = SERVICE.getE3(new AddressingFeature());
+    }
+
     public String findContractorByNip(String nip) {
-        UslugaBIRzewnPubl service = new UslugaBIRzewnPubl();
-        IUslugaBIRzewnPubl port = service.getE3(new AddressingFeature());
+        sessionKey = PORT.zaloguj(API_KEY);
 
-        sessionKey = port.zaloguj(API_KEY);
-
-        BindingProvider provider = (BindingProvider) port;
+        BindingProvider provider = (BindingProvider) PORT;
         provider.getRequestContext().put(MessageContext.HTTP_REQUEST_HEADERS, singletonMap("sid", Arrays.asList(sessionKey)));
 
         ObjectFactory objectFactory = new ObjectFactory();
@@ -35,9 +37,9 @@ public class GusConnector {
         ParametryWyszukiwania parametryWyszukiwania = new ParametryWyszukiwania();
         parametryWyszukiwania.setNip(parametryWyszukiwaniaNip);
 
-        String result = port.daneSzukajPodmioty(parametryWyszukiwania);
+        String result = PORT.daneSzukajPodmioty(parametryWyszukiwania);
 
-        port.wyloguj(sessionKey);
+        PORT.wyloguj(sessionKey);
 
         return result;
     }

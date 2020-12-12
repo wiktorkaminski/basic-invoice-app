@@ -1,7 +1,6 @@
 package wiktorkaminski.basicinvoiceapp.bir;
 
 import org.springframework.stereotype.Service;
-import wiktorkaminski.basicinvoiceapp.bir.data.Root;
 import wiktorkaminski.basicinvoiceapp.bir.data.RootAddress;
 import wiktorkaminski.basicinvoiceapp.bir.data.RootContractor;
 import wiktorkaminski.basicinvoiceapp.bir.data.RootProperty;
