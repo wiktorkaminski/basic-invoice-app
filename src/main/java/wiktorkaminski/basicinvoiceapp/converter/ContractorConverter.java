@@ -6,7 +6,6 @@ import wiktorkaminski.basicinvoiceapp.entity.InvoiceContractor;
 public class ContractorConverter {
     public static InvoiceContractor convertToInvoiceContractor(Contractor contractor) {
         InvoiceContractor invoiceContractor = new InvoiceContractor();
-        invoiceContractor.setId(contractor.getId());
         invoiceContractor.setName(contractor.getName());
         invoiceContractor.setShortName(contractor.getShortName());
         invoiceContractor.setCountry(contractor.getAddress().getCountry());

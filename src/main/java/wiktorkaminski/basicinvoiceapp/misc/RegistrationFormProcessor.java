@@ -68,6 +68,8 @@ public class RegistrationFormProcessor {
 
         InvoiceSymbol newUserSymbol = new InvoiceSymbol();
         newUserSymbol.setOwner(savedUser);
+        newUserSymbol.setInvoiceNumber(0L);
+
         invoiceSymbolRepository.save(newUserSymbol);
 
         return savedUser;

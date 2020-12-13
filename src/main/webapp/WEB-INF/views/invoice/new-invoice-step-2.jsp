@@ -6,14 +6,14 @@
 
 <form:form modelAttribute="invoice" method="POST" action="/invoice/new-invoice-step-3">
 
-    <form:label path="saleDate">Input date of transaction (dd/mm/yyyy): </form:label>
+    <form:label path="saleDate">Input date of transaction: </form:label>
     <br/>
-    <form:input path="saleDate"/>
+    <form:input path="saleDate" placeholder="dd/mm/yyyy"/>
     <form:errors path="saleDate" cssStyle="color: red"/>
     <br/>
-    <form:label path="paymentDate">Input payment date (dd/mm/yyyy):</form:label>
+    <form:label path="paymentDate">Input payment date:</form:label>
     <br/>
-    <form:input path="paymentDate"/>
+    <form:input path="paymentDate" placeholder="dd/mm/yyyy"/>
     <form:errors path="paymentDate" cssStyle="color: red"/>
     <br/>
     <br/>

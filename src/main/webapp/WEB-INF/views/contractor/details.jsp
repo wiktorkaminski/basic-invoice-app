@@ -28,8 +28,8 @@ Actions
 
 <br/>
 <p>Options:</p>
-<a href="${pageContext.request.contextPath}/contractor/list"> >Back< </a>
-<a href="${pageContext.request.contextPath}/dashboard"> >Dashboard< </a>
+<a href="${pageContext.request.contextPath}/contractor/list"> Back </a>
+<a href="${pageContext.request.contextPath}/dashboard"> Dashboard </a>
 
 </body>
 

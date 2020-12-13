@@ -28,5 +28,8 @@ Type in new invoice item:
     <input name="listId" value="${listId}" hidden/>
     <button type="submit">Add</button>
 </form:form>
+<form method="GET" action="/invoice/list">
+    <input type="submit" value="Cancel">
+</form>
 </body>
 </html>

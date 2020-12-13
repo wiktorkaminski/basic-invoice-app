@@ -2,6 +2,7 @@ package wiktorkaminski.basicinvoiceapp.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import wiktorkaminski.basicinvoiceapp.bir.GusConnector;
 import wiktorkaminski.basicinvoiceapp.bir.GusResponseProcessor;
+import wiktorkaminski.basicinvoiceapp.bir.model.Nip;
+import wiktorkaminski.basicinvoiceapp.bir.utils.NipUtils;
 import wiktorkaminski.basicinvoiceapp.entity.Contractor;
 import wiktorkaminski.basicinvoiceapp.entity.User;
 import wiktorkaminski.basicinvoiceapp.repository.ContractorRepository;
 import wiktorkaminski.basicinvoiceapp.repository.UserRepository;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,7 +43,12 @@ public class ContractorController {
     }
 
     @PostMapping("/form")
-    public String processForm(Contractor contractor, SessionStatus sessionStatus, Principal principal) {
+    public String processForm(@Valid Contractor contractor, BindingResult validationResult, SessionStatus sessionStatus, Principal principal) {
+
+        if (validationResult.hasErrors()) {
+            return "contractor/form";
+        }
+
         User user = userRepository.findByUsername(principal.getName());
         contractor.setOwner(user);
         contractorRepository.save(contractor);
@@ -85,14 +94,20 @@ public class ContractorController {
     }
 
     @GetMapping("/bir/search")
-    public String birQueryForm() {
+    public String birQueryForm(Model model) {
+        model.addAttribute("nip", new Nip());
         return "contractor/bir-form";
     }
 
     @PostMapping("/bir/search")
-    public String processBirQuery(Model model, @RequestParam String nip) {
+    public String processBirQuery(Model model, @Valid Nip nip, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            return "contractor/bir-form";
+        }
 
-        String gusResponse = gusConnector.findContractorByNip(nip);
+        NipUtils.unify(nip);
+
+        String gusResponse = gusConnector.findContractorByNip(nip.getNip());
         Contractor contractor = GusResponseProcessor.bind(gusResponse);
         model.addAttribute("contractor", contractor);
         return "contractor/form";

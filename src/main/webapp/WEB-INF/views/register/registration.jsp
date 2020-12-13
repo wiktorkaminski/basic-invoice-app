@@ -27,7 +27,7 @@
     <form:errors path="lastName" cssStyle="color: red"/>
     <br/>
     <form:label path="password">Password: </form:label>
-    <form:password path="password"/>
+    <form:password path="password" placeholder="min 8 characters"/>
     <form:errors path="password" cssStyle="color: red"/>
     <br/><br/>
     <form:label path="companyName">Company name: </form:label>
@@ -47,7 +47,7 @@
     <form:errors path="property" cssStyle="color: red"/>
     <br/>
     <form:label path="zipCode">Zip code: </form:label>
-    <form:input path="zipCode"/>
+    <form:input path="zipCode" placeholder="XX-XXX"/>
     <form:errors path="zipCode" cssStyle="color: red"/>
     <form:label path="city">City: </form:label>
     <form:input path="city"/>
@@ -64,15 +64,15 @@
     <form:input path="regon"/>
     <form:errors path="regon" cssStyle="color: red"/>
     <br/>
-    <form:label path="phone">Phone (optional): </form:label>
-    <form:input path="phone"/>
+    <form:label path="phone">Phone: </form:label>
+    <form:input path="phone" placeholder="optional"/>
     <br/>
-    <form:label path="email">Company e-mail (optional): </form:label>
-    <form:input path="email" />
+    <form:label path="email">Company e-mail: </form:label>
+    <form:input path="email" placeholder="optional"/>
     <form:errors path="email" cssStyle="color: red"/>
     <br/>
-    <form:label path="website">Website (optional): </form:label>
-    <form:input path="website"/>
+    <form:label path="website">Website: </form:label>
+    <form:input path="website" placeholder="optional"/>
     <form:errors path="website" cssStyle="color: red"/>
     <br/>
     <input type="submit" value="Sign up">

@@ -1,6 +1,13 @@
 package wiktorkaminski.basicinvoiceapp.entity;
 
+import org.hibernate.validator.constraints.URL;
+import org.hibernate.validator.constraints.pl.NIP;
+import org.hibernate.validator.constraints.pl.REGON;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 
 @Entity
@@ -11,6 +18,7 @@ public class Contractor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
 
     @Column(length = 16)
@@ -20,12 +28,17 @@ public class Contractor {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @NotNull
+    @NIP
     private String nip;
 
+    @NotNull
+    @REGON
     private String regon;
 
     private String phone;
 
+    @Email
     private String email;
 
     private String website;

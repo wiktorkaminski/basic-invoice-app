@@ -57,7 +57,6 @@ public class RegistrationForm {
     @Email
     private String email;
 
-    @URL
     private String website;
 
     public String getFirstName() {
